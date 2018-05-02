@@ -1,31 +1,12 @@
-﻿using System;
-using System.Reactive.Disposables;
+﻿using RxWorkshop.Implementations;
+using System;
 using System.Reactive.Subjects;
-using System.Threading;
 
 namespace RxWorkshop
 {
     public class KeyTypes
     {
-        static void Main()
-        {
-            //ObservableObserverPair();
-            //UsingSynchronousObservables();
-            //NaiveSubjectImplementation();
-            //WorkingWithAnActualSubject();
-            //TimeOfSubscriptionActuallyMattersForSubjects();
-            //HowAboutACache();
-            //CacheItEvenAfterCompletion();
-            //TheDefaultValueForASubscriptionBeforeEmittingAValue();
-            //TheLastValueBeforeSubscription();
-            //TheLastValueBeforeCompletion();
-            //UnlessThereIsNone_ButAtLeastItFinishes();
-            //LikeIfItWereInfinite();
-
-            Console.Read();
-        }
-
-        private static void ObservableObserverPair()
+        public static void ObservableObserverPair()
         {
             var consoleObserver = new ConsoleObserver<int>();
             var synchronousObservable = new SynchronousObservable();
@@ -35,22 +16,25 @@ namespace RxWorkshop
 
             //can't do something in the mean time (while subscribed to a synchronous observable)
             Console.WriteLine("This is executed only after the whole subscription fiasco");
+
+            //remeber to dispose of the subscription => See LifetimeManagement
+            subscription.Dispose();
         }
 
-        private static void UsingSynchronousObservables()
+        public static void UsingSynchronousObservables()
         {
             var consoleObserver = new ConsoleObserver<int>();
             var synchronousObservable = new SynchronousObservable();
             var stillSynchronousObservable = new SpacedOutButStillSynchronousObservable();
 
             var subscription = synchronousObservable.Subscribe(consoleObserver);
-            var subscriptionSO = stillSynchronousObservable.Subscribe(consoleObserver);
+            var subscription2 = stillSynchronousObservable.Subscribe(consoleObserver);
 
             subscription.Dispose();
-            subscriptionSO.Dispose();
+            subscription2.Dispose();
         }
 
-        private static void NaiveSubjectImplementation()
+        public static void NaiveSubjectImplementation()
         {
             var consoleObserver = new ConsoleObserver<int>();
             var naiveSubject = new NaiveSubject<int>();
@@ -61,9 +45,13 @@ namespace RxWorkshop
             naiveSubject.OnError(new Exception("Custom"));
             //This shouldn't happen in a proper implementation (no more values after OnError / OnCompleted)
             naiveSubject.OnNext(6);
+
+            subscription.Dispose();
+            //This shouldn't happen in a proper implementation either.
+            naiveSubject.OnNext(7);
         }
 
-        private static void WorkingWithAnActualSubject()
+        public static void WorkingWithAnActualSubject()
         {
             var consoleObserver = new ConsoleObserver<int>();
             var subject = new Subject<int>();
@@ -74,9 +62,11 @@ namespace RxWorkshop
             subject.OnError(new Exception("Custom"));
             //This won't appear because of the contract of IObservable
             subject.OnNext(6);
+
+            subscription.Dispose();
         }
 
-        private static void TimeOfSubscriptionActuallyMattersForSubjects()
+        public static void TimeOfSubscriptionActuallyMattersForSubjects()
         {
             var consoleObserver = new ConsoleObserver<int>();
             var subject = new Subject<int>();
@@ -93,9 +83,12 @@ namespace RxWorkshop
             subject.OnNext(8);
 
             subject.OnCompleted();
+
+            subscription.Dispose();
+            subscription2.Dispose();
         }
 
-        private static void HowAboutACache()
+        public static void HowAboutACache()
         {
             var consoleObserver = new ConsoleObserver<int>();
             var replaySubject = new ReplaySubject<int>();
@@ -109,9 +102,12 @@ namespace RxWorkshop
             var subscription2 = replaySubject.Subscribe(consoleObserver2);
 
             replaySubject.OnCompleted();
+
+            subscription.Dispose();
+            subscription2.Dispose();
         }
 
-        private static void CacheItEvenAfterCompletion()
+        public static void CacheItEvenAfterCompletion()
         {
             var consoleObserver = new ConsoleObserver<int>();
             var replaySubject = new ReplaySubject<int>();
@@ -124,9 +120,12 @@ namespace RxWorkshop
 
             var consoleObserver2 = new ConsoleObserver<int>();
             var subscription2 = replaySubject.Subscribe(consoleObserver2);
+
+            subscription.Dispose();
+            subscription2.Dispose();
         }
 
-        private static void TheDefaultValueForASubscriptionBeforeEmittingAValue()
+        public static void TheDefaultValueForASubscriptionBeforeEmittingAValue()
         {
             var subject = new BehaviorSubject<int>(-1);
 
@@ -147,9 +146,12 @@ namespace RxWorkshop
             subject.OnNext(8);
 
             subject.OnCompleted();
+
+            subscription.Dispose();
+            subscription2.Dispose();
         }
 
-        private static void TheLastValueBeforeSubscription()
+        public static void TheLastValueBeforeSubscription()
         {
             var subject = new BehaviorSubject<int>(-1);
 
@@ -171,114 +173,57 @@ namespace RxWorkshop
             subject.OnNext(8);
 
             subject.OnCompleted();
+
+            subscription.Dispose();
+            subscription2.Dispose();
         }
 
-        private static void TheLastValueBeforeCompletion()
+        public static void TheLastValueBeforeCompletion()
         {
             var subject = new AsyncSubject<int>();
             var consoleObserver = new ConsoleObserver<int>();
             var subscription = subject.Subscribe(consoleObserver);
 
             var observer2 = new ConsoleObserver<int>();
-            var subscriptionSubject2 = subject.Subscribe(observer2);
+            var subscription2 = subject.Subscribe(observer2);
 
             subject.OnNext(9);
             subject.OnCompleted();
+
+            subscription.Dispose();
+            subscription2.Dispose();
         }
 
-        private static void UnlessThereIsNone_ButAtLeastItFinishes()
+        public static void UnlessThereIsNone_ButAtLeastItFinishes()
         {
             var subject = new AsyncSubject<int>();
             var consoleObserver = new ConsoleObserver<int>();
             var subscription = subject.Subscribe(consoleObserver);
 
-            var observer2 = new ConsoleObserver<int>();
-            var subscriptionSubject2 = subject.Subscribe(observer2);
+            var consoleObserver2 = new ConsoleObserver<int>();
+            var subscription2 = subject.Subscribe(consoleObserver2);
 
             subject.OnCompleted();
             //This won't appear because of the contract of IObservable
             subject.OnNext(9);
+
+            subscription.Dispose();
+            subscription2.Dispose();
         }
 
-        private static void LikeIfItWereInfinite()
+        public static void NotCompletingAnAsyncSubject_WillNotPushAnyValueOut()
         {
             var subject = new AsyncSubject<int>();
             var consoleObserver = new ConsoleObserver<int>();
             var subscription = subject.Subscribe(consoleObserver);
 
-            var observer2 = new ConsoleObserver<int>();
-            var subscriptionSubject2 = subject.Subscribe(observer2);
+            var consoleObserver2 = new ConsoleObserver<int>();
+            var subscription2 = subject.Subscribe(consoleObserver2);
 
             subject.OnNext(9);
-        }
 
-        public class ConsoleObserver<T> : IObserver<T>
-        {
-            public void OnNext(T value)
-            {
-                Console.WriteLine("Received value {0}", value);
-            }
-            public void OnError(Exception error)
-            {
-                Console.WriteLine("Sequence faulted with {0}", error);
-            }
-            public void OnCompleted()
-            {
-                Console.WriteLine("Sequence terminated");
-            }
-        }
-
-        public class SynchronousObservable : IObservable<int>
-        {
-            public IDisposable Subscribe(IObserver<int> observer)
-            {
-                observer.OnNext(1);
-                observer.OnNext(2);
-                observer.OnNext(3);
-                observer.OnCompleted();
-                return Disposable.Empty;
-            }
-        }
-
-        public class SpacedOutButStillSynchronousObservable : IObservable<int>
-        {
-            public IDisposable Subscribe(IObserver<int> observer)
-            {
-                observer.OnNext(1);
-                Thread.Sleep(1000);
-                observer.OnNext(2);
-                Thread.Sleep(1500);
-                observer.OnNext(3);
-                Thread.Sleep(2000);
-                observer.OnCompleted();
-                return Disposable.Empty;
-            }
-        }
-
-        public class NaiveSubject<T> : IObservable<T>, IObserver<T>
-        {
-            private IObserver<T> _observer;
-
-            public IDisposable Subscribe(IObserver<T> observer)
-            {
-                _observer = observer;
-                return Disposable.Empty;
-            }
-
-            public void OnNext(T value)
-            {
-                _observer?.OnNext(value);
-            }
-
-            public void OnError(Exception error)
-            {
-                _observer?.OnError(error);
-            }
-
-            public void OnCompleted()
-            {
-                _observer?.OnCompleted();
-            }
+            subscription.Dispose();
+            subscription2.Dispose();
         }
     }
 }
