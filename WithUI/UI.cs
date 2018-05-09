@@ -12,12 +12,17 @@ namespace WithUI
             InitializeComponent();
         }
 
-        private void BtnDoClick(object sender, EventArgs e)
+        private void BtnContextDisposableClick(object sender, EventArgs e)
         {
             txtOutput.Text = "The UI Thread ID is: " + Thread.CurrentThread.ManagedThreadId + Environment.NewLine;
 
             var logging = new Action<string>(message => txtOutput.Invoke(new Action(() => txtOutput.Text += message + Environment.NewLine)));
             LifetimeManagement.ContextDisposable_WillExecuteItsDisposableImplementation_OnTheSpecifiedSynchronizationContext(logging);
+        }
+
+        private void BtnFromEventPatternClick(object sender, EventArgs e)
+        {
+            Sequences.Transitioning.ObservableFromEventPattern_IsTheEventObserverPatternImplementationOnSteroids(this);
         }
     }
 }

@@ -23,13 +23,14 @@ namespace RxWorkshop
                 () => Console.WriteLine("Should be true now that OnCompleted has been called: " + ((StableCompositeDisposable)subscription).IsDisposed));
 
             Console.WriteLine("Should be false here because it is not completed yet: " + ((StableCompositeDisposable)subscription).IsDisposed);
-            Console.Read();
         }
 
         public static void NotDisposingOfSubjectSubscription_CausesMemoryLeaks_BecauseOfTheyWaySubscribe_IsImplementedOnTheSubjectClass()
         {
             var subject = new Subject<int>();
-            var subscription = subject.Subscribe(new ConsoleObserver<int>());
+            var subscription = subject
+                               //.AsObservable()
+                               .Subscribe(new ConsoleObserver<int>());
 
             var longerLastingObservableThanSubject = subject.Concat(Observable.Return(-1));
             var subscription2 = longerLastingObservableThanSubject
@@ -96,30 +97,30 @@ namespace RxWorkshop
         {
             Console.WriteLine("We are starting on Thread ID: " + Thread.CurrentThread.ManagedThreadId);
 
-            var contextDisposable = new ScheduledDisposable(
+            var scheduledDisposable = new ScheduledDisposable(
                 NewThreadScheduler.Default,
                 Disposable.Create(() => Console.WriteLine("Disposing Thread ID: " + Thread.CurrentThread.ManagedThreadId)));
 
             Scheduler.Default.Schedule(() =>
             {
                 Console.WriteLine("Calling Thread ID: " + Thread.CurrentThread.ManagedThreadId);
-                contextDisposable.Dispose();
+                scheduledDisposable.Dispose();
             });
-
-            Console.Read();
         }
 
-        public static void CompsiteDisposable_GroupsASetOfDisposables_IntoASingleContainer_ThatCanBeUsedToDisposeAllInOneSwoop()
+        public static void CompositeDisposable_GroupsASetOfDisposables_IntoASingleContainer_ThatCanBeUsedToDisposeAllInOneSwoop()
         {
+            Console.WriteLine("We are starting on Thread ID: " + Thread.CurrentThread.ManagedThreadId);
+
             //Look at the Thread ID where the observation takes place.
             //Now try a variation of 500 - 350 - 110 ms
             var composite = new CompositeDisposable
                             {
                                 Observable.Interval(TimeSpan.FromMilliseconds(500))
                                     .Subscribe(_ => Console.WriteLine("Ticking from 500ms on " + Thread.CurrentThread.ManagedThreadId)),
-                                Observable.Interval(TimeSpan.FromMilliseconds(250))
+                                Observable.Interval(TimeSpan.FromMilliseconds(365))
                                     .Subscribe(_ => Console.WriteLine("Ticking from 250ms on " + Thread.CurrentThread.ManagedThreadId)),
-                                Observable.Interval(TimeSpan.FromMilliseconds(125))
+                                Observable.Interval(TimeSpan.FromMilliseconds(105))
                                     .Subscribe(_ => Console.WriteLine("Ticking from 125ms on " + Thread.CurrentThread.ManagedThreadId))
                             };
 
@@ -134,7 +135,7 @@ namespace RxWorkshop
         {
             var singleAssignmentDisposable = new SingleAssignmentDisposable();
             var notDisposedDisposable = Disposable.Create(() => Console.WriteLine("I am gonna be disposed because I was first."));
-            var replacementDisposable = Disposable.Create(() => Console.WriteLine("I can't replace the first assigned disposable. Estupido!"));
+            var replacementDisposable = new BooleanDisposable();//Disposable.Create(() => Console.WriteLine("I can't replace the first assigned disposable. Estupido!"));
 
             singleAssignmentDisposable.Disposable = notDisposedDisposable;
 
@@ -151,6 +152,7 @@ namespace RxWorkshop
             singleAssignmentDisposable.Dispose();
 
             Console.WriteLine($"Single assignement disposable is disposed: {singleAssignmentDisposable.IsDisposed}.");
+            Console.WriteLine($"Replacement disposable is disposed: {replacementDisposable.IsDisposed}.");
         }
 
         public static void MultipleAssignmentDisposable_WillAllowRotatingTheUnderlyingDisposable_WithoutDisposingOfTheReplacedDisposable()
@@ -221,6 +223,7 @@ namespace RxWorkshop
             using (disposable)
             {
                 Console.WriteLine("Do something like `control.BeginUpdate()`");
+                //Do updaty stuff
             }
         }
     }
