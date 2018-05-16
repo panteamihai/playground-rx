@@ -1,4 +1,5 @@
 ﻿using RxWorkshop.Extensions;
+using RxWorkshop.Helpers;
 using System;
 using System.Linq;
 using System.Net;
@@ -15,24 +16,14 @@ using System.Windows.Forms;
 
 namespace RxWorkshop
 {
-    public static class Sequences
+    public static class CreatingSequences
     {
-        private static void GetNow()
-        {
-            Console.WriteLine($"Now: {DateTime.Now.ToUniversalTime():HH:mm:ss fff}");
-        }
-
-        private static void GetCurrentThread()
-        {
-            Console.WriteLine($"Current Thread ID: {Thread.CurrentThread.ManagedThreadId}");
-        }
-
-        public static class Create
+        public static class Factory
         {
             public static void ButFirst_SomeHandyToolsForReasoning_Timestamp()
             {
                 Console.WriteLine($"Now: {DateTime.Now/*.ToUniversalTime()*/.ToLongTimeString()}");
-                //GetNow();
+                //Get.Now();
                 Observable.Interval(TimeSpan.FromMilliseconds(450)).Take(6).Timestamp().Dump("Timestamp");
 
                 //Timestamped class
@@ -40,7 +31,7 @@ namespace RxWorkshop
 
             public static void AndThen_TheresAnotherHandyToolsForReasoning_TimeInterval()
             {
-                GetNow();
+                Get.Now();
                 Observable.Interval(TimeSpan.FromMilliseconds(750)).Take(3)
                     .Concat(Observable.Interval(TimeSpan.FromMilliseconds(230)).Take(5))
                     .TimeInterval().Dump("TimeInterval");
@@ -48,7 +39,7 @@ namespace RxWorkshop
 
             public static void ObservableReturn_IsASynchronousColdObservable_ThatReturnsASingleValue()
             {
-                GetNow();
+                Get.Now();
                 var source = Observable.Return("A value delivered as an IObservable").Timestamp();
                 source.Dump("Observable.Return");
 
@@ -59,19 +50,19 @@ namespace RxWorkshop
 
             public static void ObservableEmpty_IsASynchronousColdObservable_ThatCompletesImmediately()
             {
-                GetNow();
+                Get.Now();
                 Observable.Empty("A witness value for inferring the type").Timestamp().Dump("Observable.Empty");
             }
 
             public static void ObservableNever_IsAnObservable_ThatNeverCompletes()
             {
-                GetNow();
+                Get.Now();
                 Observable.Never("A witness value for inferring the type").Timestamp().Dump("Observable.Never");
             }
 
             public static void ObservableThrow_IsAnObservable_ThatCompletesWithAnExceptionImmediately()
             {
-                GetNow();
+                Get.Now();
                 Observable.Throw<string>(new AccessViolationException()).Timestamp().Dump("Observable.Throw");
             }
 
@@ -79,6 +70,9 @@ namespace RxWorkshop
             {
                 //A significant benefit that the CreateLazySequence method has over subjects is that the sequence will be lazily evaluated.
                 //Lazy evaluation opens the doors to other powerful features such as scheduling and combination of sequences that we will see later.
+
+                //The "lazily evaluated" part here refers to the fact that the Action<IObserver> will only ever execute when you do the Subscribe.
+                //That means that the there is an observer already attached to the obervable while the statements inside the action are sequentially evaluated.
                 IObservable<string> CreateLazySequence(string name, int timeout)
                 {
                     return Observable.Create(
@@ -97,8 +91,28 @@ namespace RxWorkshop
                         });
                 }
 
-                //Blocked before they even receive the IObservable<string>, regardless of if they do actually subscribe to it or not.
-                IObservable<string> CreateBlockingSequence(string name, int timeout)
+                //Beacuse the observable creation part is run before the actual subscribe, that means that by the time
+                //somebody actually subscribes, the subject will have already produced its values and completed,
+                //so we're basically subscribing to an Observable.Empty
+                IObservable<string> CreateBlockingSequence_WhoseValuesWeWillNeverSee(string name, int timeout)
+                {
+                    var subject = new Subject<string>();
+
+                    subject.OnNext($"Furst on {name}" + Thread.CurrentThread.ManagedThreadId);
+                    Thread.Sleep(timeout);
+
+                    subject.OnNext($"Sicomd on {name}" + Thread.CurrentThread.ManagedThreadId);
+                    Thread.Sleep(timeout);
+
+                    subject.OnCompleted();
+
+                    return subject;
+                }
+
+                //Beacuse the observable creation part is run before the actual subscribe, that means that by the time
+                //somebody actually subscribes, the subject will have already produced its values and completed. But,
+                //because it is a ReplaySubject that is not disposed, we can subscribe and we'll receive all the produced values
+                IObservable<string> CreateBlockingSequence_WhoseValuesWeWillSee_BecauseTheyAreReplayed(string name, int timeout)
                 {
                     var subject = new ReplaySubject<string>();
 
@@ -113,13 +127,17 @@ namespace RxWorkshop
                     return subject;
                 }
 
-                GetCurrentThread();
-                GetNow();
+                Get.CurrentThread();
+                Get.Now();
                 CreateLazySequence("Dre", 2000).Timestamp().Dump("Lazy Sequence");
 
                 Console.ReadLine();
-                GetNow();
-                CreateBlockingSequence("Still Dre", 2000).Timestamp().Dump("Blocking Sequence");
+                Get.Now();
+                CreateBlockingSequence_WhoseValuesWeWillNeverSee("Still Dre", 2000).Timestamp().Dump("Blocking Sequence with no values (late subscription)");
+
+                Console.ReadLine();
+                Get.Now();
+                CreateBlockingSequence_WhoseValuesWeWillSee_BecauseTheyAreReplayed("Still Dre", 2000).Timestamp().Dump("Blocking Sequence with replayed values (late subscription)");
             }
 
             public static void ObservableCreate_IsAVeryPowerfulThing()
@@ -160,10 +178,10 @@ namespace RxWorkshop
                         });
                 }
 
-                Empty<string>().Dump("Observable.Create->Empty");
-                Return(42).Dump("Observable.Create->Return");
-                Never<string>().Dump("Observable.Create->Never");
-                Throws<string>(new PingException("Pong")).Dump("Observable.Create->Throws");
+                Empty<string>().Dump("Observable.Factory->Empty");
+                Return(42).Dump("Observable.Factory->Return");
+                Never<string>().Dump("Observable.Factory->Never");
+                Throws<string>(new PingException("Pong")).Dump("Observable.Factory->Throws");
             }
 
             public static void ObservableCreate_IsSeriouslyPowerfullDude()
@@ -222,7 +240,7 @@ namespace RxWorkshop
                 Func<int, int> resultSelector = x => x;
                 Func<int, TimeSpan> timeSelector = x => TimeSpan.FromSeconds(1);
 
-                GetNow();
+                Get.Now();
                 Observable.Generate(initialState, condition, iterate, resultSelector, timeSelector)
                           .Timestamp()
                           .Dump("Observable.Generate->Interval(.Take(5))");
@@ -230,19 +248,19 @@ namespace RxWorkshop
 
             public static void ObservableInterval_IsPrettyBasic()
             {
-                GetNow();
+                Get.Now();
                 Observable.Interval(TimeSpan.FromMilliseconds(250)).Timestamp().Dump("Interval");
             }
 
             public static void ObservableTimer_WillReturnOneValue_ThenComplete()
             {
-                GetNow();
+                Get.Now();
                 Observable.Timer(TimeSpan.FromMilliseconds(2500)).Timestamp().Dump("Timer");
             }
 
             public static void ObservableTimer_OrItCanBeUsedToDefferTheFirstValue_ThenGenerateUsingAConstantInterval()
             {
-                GetNow();
+                Get.Now();
                 Observable.Timer(DateTime.Now + TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(1)).Timestamp()
                           .Dump("Timer (recursive)");
             }
@@ -312,7 +330,7 @@ namespace RxWorkshop
 
             public static void TaskToObservable_IsASwitchBetweenDomains_ThatOnlyWorksForHotTasks_AndDoesSoWithNoSubscriptionNecessary()
             {
-                GetNow();
+                Get.Now();
                 var coldTask = new Task<int>(() =>
                 {
                     Console.WriteLine("Starting cold task @ " + DateTime.Now.ToUniversalTime().ToString("HH:mm:ss fff"));
@@ -344,7 +362,7 @@ namespace RxWorkshop
 
             public static void ObservableFromAsync_IsASwitchBetweenDomains_ButItIsDeferredUntilSubscription()
             {
-                GetNow();
+                Get.Now();
                 var observableFromColdTask = Observable.FromAsync(() => new Task<int>(() =>
                 {
                     Console.WriteLine("Starting cold task @ " + DateTime.Now.ToUniversalTime().ToString("HH:mm:ss fff"));

@@ -32,26 +32,26 @@ namespace RxWorkshop
             //LifetimeManagement.RefCountDisposable_SuppliesAsManyDependentDisposablesAsYouNeed_ButOnlyGetsDisposedAfterAllDependentsAreDisposedOf();
             //LifetimeManagement.UsingDisposableCreate_ToWrapActionsInADisposableObject();
 
-            //Sequences.Create.ButFirst_SomeHandyToolsForReasoning_Timestamp();
-            //Sequences.Create.AndThen_TheresAnotherHandyToolsForReasoning_TimeInterval();
-            //Sequences.Create.ObservableReturn_IsASynchronousColdObservable_ThatReturnsASingleValue();
-            //Sequences.Create.ObservableEmpty_IsASynchronousColdObservable_ThatCompletesImmediately();
-            //Sequences.Create.ObservableNever_IsAnObservable_ThatNeverCompletes();
-            //Sequences.Create.ObservableThrow_IsAnObservable_ThatCompletesWithAnExceptionImmediately();
-            //Sequences.Create.ObservableCreate_WillReturnALazilyEvaluatedSequence();
-            //Sequences.Create.ObservableCreate_IsAVeryPowerfulThing();
-            //Sequences.Create.ObservableCreate_IsSeriouslyPowerfullDude();
-            //Sequences.Unfold.ObservableRange_IsTheMostBasicObservableUnfold_ButNoticeItIsAlsoSynchrnous();
-            //Sequences.Unfold.ObservableGenerate_IsTheOtherReallyPowerfulThing_IsCatersToUnfolds();
-            //Sequences.Unfold.ObservableInterval_IsPrettyBasic();
-            //Sequences.Unfold.ObservableTimer_WillReturnOneValue_ThenComplete();
-            //Sequences.Unfold.ObservableTimer_OrItCanBeUsedToDefferTheFirstValue_ThenGenerateUsingAConstantInterval();
-            //Sequences.Transitioning.ObservableStart_WillTakeALongRunningDelegate_AndRunItAsynchronously();
-            //WithUI -> Sequences.Transitioning.ObservableFromEventPattern_IsTheEventObserverPatternImplementationOnSteroids();
-            //Sequences.Transitioning.TaskToObservable_IsASwitchBetweenDomains_ThatOnlyWorksForHotTasks_AndDoesSoWithNoSubscriptionNecessary();
-            //Sequences.Transitioning.ObservableFromEnumerable_IsADangerousThing_UnlessYouKnowWhatYouAreDoing();
-            //Sequences.Transitioning.ObservableFromAsync_IsASwitchBetweenDomains_ButItIsDeferredUntilSubscription();
-            //Sequences.Transitioning.ObservableFromAsyncPattern_AllowsYouToTransitionLegacyAPM_ToTAP();
+            //CreatingSequences.Factory.ButFirst_SomeHandyToolsForReasoning_Timestamp();
+            //CreatingSequences.Factory.AndThen_TheresAnotherHandyToolsForReasoning_TimeInterval();
+            //CreatingSequences.Factory.ObservableReturn_IsASynchronousColdObservable_ThatReturnsASingleValue();
+            //CreatingSequences.Factory.ObservableEmpty_IsASynchronousColdObservable_ThatCompletesImmediately();
+            //CreatingSequences.Factory.ObservableNever_IsAnObservable_ThatNeverCompletes();
+            //CreatingSequences.Factory.ObservableThrow_IsAnObservable_ThatCompletesWithAnExceptionImmediately();
+            //CreatingSequences.Factory.ObservableCreate_WillReturnALazilyEvaluatedSequence();
+            //CreatingSequences.Factory.ObservableCreate_IsAVeryPowerfulThing();
+            //CreatingSequences.Factory.ObservableCreate_IsSeriouslyPowerfullDude();
+            //CreatingSequences.Unfold.ObservableRange_IsTheMostBasicObservableUnfold_ButNoticeItIsAlsoSynchrnous();
+            //CreatingSequences.Unfold.ObservableGenerate_IsTheOtherReallyPowerfulThing_IsCatersToUnfolds();
+            //CreatingSequences.Unfold.ObservableInterval_IsPrettyBasic();
+            //CreatingSequences.Unfold.ObservableTimer_WillReturnOneValue_ThenComplete();
+            //CreatingSequences.Unfold.ObservableTimer_OrItCanBeUsedToDefferTheFirstValue_ThenGenerateUsingAConstantInterval();
+            //CreatingSequences.Transitioning.ObservableStart_WillTakeALongRunningDelegate_AndRunItAsynchronously();
+            //WithUI -> CreatingSequences.Transitioning.ObservableFromEventPattern_IsTheEventObserverPatternImplementationOnSteroids();
+            //CreatingSequences.Transitioning.TaskToObservable_IsASwitchBetweenDomains_ThatOnlyWorksForHotTasks_AndDoesSoWithNoSubscriptionNecessary();
+            //CreatingSequences.Transitioning.ObservableFromEnumerable_IsADangerousThing_UnlessYouKnowWhatYouAreDoing();
+            //CreatingSequences.Transitioning.ObservableFromAsync_IsASwitchBetweenDomains_ButItIsDeferredUntilSubscription();
+            //CreatingSequences.Transitioning.ObservableFromAsyncPattern_AllowsYouToTransitionLegacyAPM_ToTAP();
 
             Console.ReadLine();
         }

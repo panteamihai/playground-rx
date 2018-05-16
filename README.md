@@ -1,10 +1,8 @@
-# Reactive Programming
-
-## Rx.NET
+# Reactive Programming with Rx.NET
 
 We're walking the path set forth by Lee Campbell's [Intro to Rx].
 
-### Stopovers
+## Stopovers
 
 * [Key types]
     * `IObservable<T>` & `IObserver<T>`
@@ -12,7 +10,7 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
 * [Lifetime management]
     * `IDisposable` and its variants
     * The `IDisposable` returned by the `Subscribe` extension methods will dispose itself upon `OnCompleted` or `OnError`. Other implementations won't. Still you should always capture and dispose of subscriptions yourself when possible.
-* [Sequences]
+* [Creating sequences]
     * Introducing `Timestamp` and `TimeInterval` as handy tools for visualization and reasoning about streams
     * Creating sequences and the power of the lazily evaluated `Observable.Create`
     * Functional unfolds and the other powerful generation method: `Observable.Generate`
@@ -21,4 +19,4 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
 [Intro to Rx]: <http://introtorx.com/>
 [Key types]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/KeyTypes.cs>
 [Lifetime management]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/LifetimeManagement.cs>
-[Sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/Sequences.cs>
+[Creating sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/CreatingSequences.cs>

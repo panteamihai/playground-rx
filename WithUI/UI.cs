@@ -22,7 +22,7 @@ namespace WithUI
 
         private void BtnFromEventPatternClick(object sender, EventArgs e)
         {
-            Sequences.Transitioning.ObservableFromEventPattern_IsTheEventObserverPatternImplementationOnSteroids(this);
+            CreatingSequences.Transitioning.ObservableFromEventPattern_IsTheEventObserverPatternImplementationOnSteroids(this);
         }
     }
 }
