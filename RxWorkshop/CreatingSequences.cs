@@ -274,7 +274,8 @@ namespace RxWorkshop
                 {
                     return Observable.Start(() =>
                     {
-                        Console.WriteLine("Working away");
+                        Console.WriteLine("Working away on ");
+                        Get.CurrentThread();
                         for (var i = 0; i < 25; i++)
                         {
                             Thread.Sleep(100);
@@ -290,6 +291,7 @@ namespace RxWorkshop
                     return Observable.Start(() =>
                     {
                         Console.WriteLine("Working away");
+                        Get.CurrentThread();
                         for (var i = 0; i < 10; i++)
                         {
                             Thread.Sleep(100);
@@ -301,12 +303,15 @@ namespace RxWorkshop
                     });
                 }
 
+                Get.CurrentThread();
+                //Eagerly indeed: just call AsynchronousAction() with no Subscribe() / Dump()
                 AsynchronousAction().Dump("Async action");
 
                 Console.ReadLine();
                 AsynchronousFunc().Dump("Async func");
 
-                //Start lazily evaluates the value from a function, Return provided the value eagerly!!
+                //Observable.Start eagerly evaluates the value from a function on the thread pool
+                //Observable.Return eagerly evaluated it on the current thread, thus blocking!!
             }
 
             public static void ObservableFromEventPattern_IsTheEventObserverPatternImplementationOnSteroids(Form form)
@@ -334,18 +339,26 @@ namespace RxWorkshop
                 var coldTask = new Task<int>(() =>
                 {
                     Console.WriteLine("Starting cold task @ " + DateTime.Now.ToUniversalTime().ToString("HH:mm:ss fff"));
-                    Thread.Sleep(5270);
+                    Thread.Sleep(1270);
                     Console.WriteLine("Finished cold task @ " + DateTime.Now.ToUniversalTime().ToString("HH:mm:ss fff"));
                     return 122;
                 });
 
                 Console.ReadLine();
-                Console.WriteLine("You'll never see shit from cold tasks :(...");
+                Console.WriteLine("You'll never see shit from cold tasks that aren't started :(...");
                 coldTask.ToObservable();
 
                 Console.ReadLine();
                 Console.WriteLine("...even if you subscribe to it!");
                 coldTask.ToObservable().Dump("Nope");
+
+                Console.ReadLine();
+                Console.WriteLine("You'll see it only if the cold task is started");
+                coldTask.Start();
+                coldTask.ToObservable().Dump("Nope");
+                //or after: coldTask.Start();
+
+                //Task.ToObservable() does not interfere with the laziness of the underlying Task
 
                 var observableOverHotTask = Task.Run(() =>
                 {
@@ -363,19 +376,23 @@ namespace RxWorkshop
             public static void ObservableFromAsync_IsASwitchBetweenDomains_ButItIsDeferredUntilSubscription()
             {
                 Get.Now();
-                var observableFromColdTask = Observable.FromAsync(() => new Task<int>(() =>
+                var coldTask = new Task<int>(() =>
                 {
                     Console.WriteLine("Starting cold task @ " + DateTime.Now.ToUniversalTime().ToString("HH:mm:ss fff"));
                     Thread.Sleep(3270);
                     Console.WriteLine("Finished cold task @ " + DateTime.Now.ToUniversalTime().ToString("HH:mm:ss fff"));
                     return 665;
-                }));
+                });
+                var observableFromColdTask = Observable.FromAsync(() => coldTask);
 
-                Console.WriteLine("Nothing happens by default for cold tasks");
+                Console.WriteLine("Nothing happens eagerly for cold tasks that aren't started");
                 Console.ReadLine();
 
-                Console.WriteLine("Nothing happens on purpose for cold tasks either!!!");
+                Console.WriteLine("Nothing happens lazily for cold tasks that aren't started either!!!");
                 observableFromColdTask.Dump("FromColdTask");
+                Console.ReadLine();
+
+                coldTask.Start();
                 Console.ReadLine();
 
                 var observableFromHotTask = Observable.FromAsync(() => Task.Run(() =>
@@ -386,7 +403,7 @@ namespace RxWorkshop
                     return 665;
                 }));
 
-                Console.WriteLine("Nothing happens by default for hot tasks either...");
+                Console.WriteLine("Nothing happens eagerly for hot tasks either...");
                 Console.ReadLine();
                 Console.WriteLine("...until a subscription is made.");
                 observableFromHotTask.Dump("FromHotTask");
@@ -404,7 +421,8 @@ namespace RxWorkshop
                 request.Method = "GET";
 
                 Observable.FromAsyncPattern(request.BeginGetResponse, request.EndGetResponse)().Subscribe(wr => Console.WriteLine((int)((HttpWebResponse)wr).StatusCode));
-                //Task.Factory.FromAsync(request.BeginGetResponse, asyncResult => request.EndGetResponse(asyncResult), null).ToObservable().Subscribe(wr => Console.WriteLine((int)((HttpWebResponse)wr).StatusCode));
+                //var state = new object();
+                //Task.Factory.FromAsync(request.BeginGetResponse, asyncResult => request.EndGetResponse(asyncResult), state).ToObservable().Subscribe(wr => Console.WriteLine((int)((HttpWebResponse)wr).StatusCode));
             }
         }
     }
