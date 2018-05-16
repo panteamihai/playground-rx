@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\Get.cs" />
+    <Compile Include="InspectingSequences.cs" />
     <Compile Include="ReducingSequences.cs" />
     <Compile Include="CreatingSequences.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />

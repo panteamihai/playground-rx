@@ -67,6 +67,13 @@ namespace RxWorkshop
             //ReducingSequences.SkipUntil_UsesSecondObservable_AsASignalToStartConsuming();
             //ReducingSequences.TakeUntil_UsesSecondObservable_AsASignalToStopConsuming();
 
+            //InspectingSequences.Any_IsUsedToCheckForElements();
+            //InspectingSequences.All_IsUsedToMatchAllElements_ToAPredicate();
+            //InspectingSequences.Contains_IsBasicallyAnAnyImplementation_ThatTargetsOneSpecificValue_AsOpposedToACategoryOfValuesThatFitAPredicate();
+            //InspectingSequences.DefaultIfEmpty_HandlesTheMissingValuesCasesGracefully();
+            //InspectingSequences.ElementAt_CherryPicksBasedOnPosition();
+            //InspectingSequences.SequenceEqual_WillTakeOrderIntoAccountAsWell();
+
             Console.ReadLine();
         }
     }
