@@ -53,6 +53,20 @@ namespace RxWorkshop
             //CreatingSequences.Transitioning.ObservableFromAsync_IsASwitchBetweenDomains_ButItIsDeferredUntilSubscription();
             //CreatingSequences.Transitioning.ObservableFromAsyncPattern_AllowsYouToTransitionLegacyAPM_ToTAP();
 
+            //ReducingSequences.Where_FilteringStuffIsEasyPeasy();
+            //ReducingSequences.Distinct_HoldsNoSurprises();
+            //ReducingSequences.Distinct_ComesInAKeySelectorFlavor();
+            //ReducingSequences.DistinctUntilChanged_PerformsPairwiseDistinct_NoTwoInARow();
+            //ReducingSequences.IgnoreElements_UseItWhenYouOnlyCareAboutCompletion();
+            //ReducingSequences.Skip_SkipsAFew();
+            //ReducingSequences.Take_TakesAFew();
+            //ReducingSequences.SkipWhile_GuardsTheFrontOfTheStream();
+            //ReducingSequences.TakeWhile_GuardsTheBackOfTheStream();
+            //ReducingSequences.SkipLast_WillBufferTheNumberOfElementsToSkip_ThenEjectOneAtATimeAfterTheBufferIsOverfilled_UntilCompletion();
+            //ReducingSequences.TakeLast_WillBufferTheNumberOfElementsToSkip_ThenDiscardOneAtATimeAfterTheBufferIsOverfilled_UntilOnCompletedIsReceived();
+            //ReducingSequences.SkipUntil_UsesSecondObservable_AsASignalToStartConsuming();
+            //ReducingSequences.TakeUntil_UsesSecondObservable_AsASignalToStopConsuming();
+
             Console.ReadLine();
         }
     }

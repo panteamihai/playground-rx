@@ -15,8 +15,13 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
     * Creating sequences and the power of the lazily evaluated `Observable.Create`
     * Functional unfolds and the other powerful generation method: `Observable.Generate`
     * Transitioning into observables by switching between domains (from `Task` or `Action`/`Func`)
+* [Reducing sequences]
+    * Filtering with `Where`
+    * Determining `Distinct` elements, and introducing pairwise distinction with `DistinctUntilChanged`
+    * `Skip`ping and `Take`ing
 
 [Intro to Rx]: <http://introtorx.com/>
 [Key types]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/KeyTypes.cs>
 [Lifetime management]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/LifetimeManagement.cs>
 [Creating sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/CreatingSequences.cs>
+[Reducing sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/ReducingSequences.cs>
