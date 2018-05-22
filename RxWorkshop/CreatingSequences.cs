@@ -1,11 +1,9 @@
 ﻿using RxWorkshop.Extensions;
-using RxWorkshop.Helpers;
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
@@ -13,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using RxWorkshop.Helpers;
+using Disposable = System.Reactive.Disposables.Disposable;
 
 namespace RxWorkshop
 {

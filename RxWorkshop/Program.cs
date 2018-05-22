@@ -74,6 +74,18 @@ namespace RxWorkshop
             //InspectingSequences.ElementAt_CherryPicksBasedOnPosition();
             //InspectingSequences.SequenceEqual_WillTakeOrderIntoAccountAsWell();
 
+            //AggregatingSequences.Count_IsBoundByTheObservableCompleting();
+            //AggregatingSequences.SequenceMath_AlsoNeedsRegularCompletion();
+            //AggregatingSequences.FunctionalFolds.First_WillBlockUntilTheValueIsProduced_OrItWillThrowIfEmptySequence();
+            //AggregatingSequences.FunctionalFolds.LastOrDefault_WillStillBlockUntilTheValueOrCompleteIsProduced_OrItWillThrowAnyEncounteredException();
+            //AggregatingSequences.FunctionalFolds.SingleAsync_WillNotBlock();
+            //WithUI -> AggregatingSequences.CustomAggregations.Aggregate_IsPowerful_ButBoundByCompletion();
+            //WithUI -> AggregatingSequences.CustomAggregations.Scan_IsJustAggregate_WithAllIntermediateSteps();
+            //AggregatingSequences.Partitioning.MinBy_WillGetTheGroupOfItemsWhoseKeysMeetTheMinimum_OnlyAfterCompletion();
+            //AggregatingSequences.Partitioning.GroupBy_IntroducesIGroupedObservable();
+            //AggregatingSequences.Partitioning.GroupBy_IfYouNeedToManipulateGroupes_ThenCombineTheResultsOfAllGroupManipulations_UseSelectMany();
+            //AggregatingSequences.Partitioning.GroupBy_NestedObservables();
+
             Console.ReadLine();
         }
     }

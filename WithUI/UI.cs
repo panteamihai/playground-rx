@@ -24,5 +24,15 @@ namespace WithUI
         {
             CreatingSequences.Transitioning.ObservableFromEventPattern_IsTheEventObserverPatternImplementationOnSteroids(this);
         }
+
+        private void BtnAggregateClick(object sender, EventArgs e)
+        {
+            AggregatingSequences.CustomAggregations.Aggregate_IsPowerful_ButBoundByCompletion(this);
+        }
+
+        private void BtnScanClick(object sender, EventArgs e)
+        {
+            AggregatingSequences.CustomAggregations.Scan_IsJustAggregate_WithAllIntermediateSteps(this);
+        }
     }
 }
