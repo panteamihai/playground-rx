@@ -239,7 +239,15 @@ namespace RxWorkshop
                 // Begin watching.
                 watcher.EnableRaisingEvents = true;
 
-                created.Merge(deleted).Merge(changed).GroupBy(i => i.Type).SelectMany(group => group.Select(i => i).Take(2)).Dump("All collapsed");
+                var merged = created.Merge(deleted).Merge(changed);
+                var grouped = merged.GroupBy(i => i.Type);
+                var flattenedGroups = grouped.SelectMany(group => group.Select(i => i).Take(2).Materialize());
+                flattenedGroups.Dump("All collapsed");
+
+                //Interestingly enough, the above flattenedGroups observable cannot complete. This is because the source
+                //observable (merged) does not complete. And since it never completes then the grouped observable cannot
+                //tell that no more groups will be created (eventhough we can tell as each of the three types we're interested
+                //in have been shown, and their group observables have terminated)
             }
         }
     }

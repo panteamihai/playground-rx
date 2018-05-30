@@ -86,6 +86,17 @@ namespace RxWorkshop
             //AggregatingSequences.Partitioning.GroupBy_IfYouNeedToManipulateGroupes_ThenCombineTheResultsOfAllGroupManipulations_UseSelectMany();
             //AggregatingSequences.Partitioning.GroupBy_NestedObservables();
 
+            //TransformingSequences.Select_TransitionsEachElementToAnotherShape();
+            //TransformingSequences.Select_CanAlsoLeverageIndexes_IndexFizzBuzz();
+            //TransformingSequences.Casting_ErrorsAndCompletesWhenCastFails();
+            //TransformingSequences.SafeCasting_WithOfType_AlwaysCompletes();
+            //TransformingSequences.Materialize_GivesYouAMetaViewOfASequence();
+            //TransformingSequences.Dematerialize_IsTheInverseAction();
+            //TransformingSequences.SelectMany_IsTheBindOperation_ShouldBeThoughtOfAs_FromOneSelectZeroOneOrMany();
+            //TransformingSequences.SelectMany_FlattensTheOutputedSequences();
+            //TransformingSequences.SelectMany_IsVeryPowerfulAsWell();
+            //TransformingSequences.VisualizingSequences_Helps();
+
             Console.ReadLine();
         }
     }
