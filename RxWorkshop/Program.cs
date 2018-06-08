@@ -97,6 +97,19 @@ namespace RxWorkshop
             //TransformingSequences.SelectMany_IsVeryPowerfulAsWell();
             //TransformingSequences.VisualizingSequences_Helps();
 
+            //SideEffects.IntroducingAndManipulatingState_IsVeryBadForComprehension();
+            //SideEffects.IfIndexIsWhatInterestsYou_GoForTheFunctionalApproach_WithTheSelectOverload();
+            //SideEffects.YouCanEncapsulateState_InsideThePipeline_UsingScan();
+            //SideEffects.EnhanceSequenceManipulation_UsingDo();
+            //SideEffects.YouCanDoNastyStuff_ToReferenceValues_WithDo();
+
+            //AdvancedErrorHandling.Catch_ForSwallowingAllExceptions();
+            //AdvancedErrorHandling.Catch_CanBeUsedForSpecificExceptionsToo();
+            //AdvancedErrorHandling.Finally_IsInvokedIfWeTerminateNormally_Erronously_OrTheSubscriptionIsDisposedOf();
+            //AdvancedErrorHandling.Using_AllowsYouToBindTheLifetimeOfAResource_ToThatOfAnObservable();
+            //AdvancedErrorHandling.OnErrorResumeNext_ProvidesAFallBack();
+            //AdvancedErrorHandling.Retry_IsTricky();
+
             Console.ReadLine();
         }
     }

@@ -34,6 +34,12 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
     * Casting and materializing
     * `SelectMany`, the powerful `bind function`
     * Visualizing sequences
+* [Side effects]
+    * Never leak effects out of pipelines, but if you must, use `Do` to emphasize them
+* [Advanced error handling]
+    * `Catch` vs. `OnErrorResumeNext`, maybe `Retry`
+    * `Using` binds the lifetime of a resource to that of a sequence
+    * `Finally` no matter what
 
 [Intro to Rx]: <http://introtorx.com/>
 [Key types]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/KeyTypes.cs>
@@ -43,3 +49,5 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
 [Inspecting sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/InspectingSequences.cs>
 [Aggregating sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/AggregatingSequences.cs>
 [Transforming sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/TransformingSequences.cs>
+[Side effects]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/SideEffects.cs>
+[Advanced error handling]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/AdvancedErrorHandling.cs> 
