@@ -33,6 +33,7 @@
             this.btnFromEventPattern = new System.Windows.Forms.Button();
             this.btnAggregate = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
+            this.btnThrottle = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnContextDisposable
@@ -83,11 +84,22 @@
             this.btnScan.UseVisualStyleBackColor = true;
             this.btnScan.Click += new System.EventHandler(this.BtnScanClick);
             // 
+            // btnThrottle
+            // 
+            this.btnThrottle.Location = new System.Drawing.Point(12, 204);
+            this.btnThrottle.Name = "btnThrottle";
+            this.btnThrottle.Size = new System.Drawing.Size(236, 42);
+            this.btnThrottle.TabIndex = 5;
+            this.btnThrottle.Text = "Run Throttle example";
+            this.btnThrottle.UseVisualStyleBackColor = true;
+            this.btnThrottle.Click += new System.EventHandler(this.BtnThrottleClick);
+            // 
             // UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(674, 286);
+            this.Controls.Add(this.btnThrottle);
             this.Controls.Add(this.btnScan);
             this.Controls.Add(this.btnAggregate);
             this.Controls.Add(this.btnFromEventPattern);
@@ -107,6 +119,7 @@
         private System.Windows.Forms.Button btnFromEventPattern;
         private System.Windows.Forms.Button btnAggregate;
         private System.Windows.Forms.Button btnScan;
+        private System.Windows.Forms.Button btnThrottle;
     }
 }
 

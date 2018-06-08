@@ -44,6 +44,12 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
     * Combining sequentially requires completion: `Concat`, `Repeat`, `StartWith`
     * Combining concurrently doesn't: `Amb`, `Merge`, `Switch`
     * Pairing is either in sync with the rate of generation: `Zip` & `And/Then/When`, or it isn't: `CombineLatest`
+* [Time-shifted sequences]
+    * `Buffer`ing: size vs. time triggers
+    * Overlapping, rolling or skipped buffering
+    * Simple time shifting with `Delay`
+    * `Sample` vs. `Throttle`
+    * `Timeout` and the beauty of operator composure
 
 [Intro to Rx]: <http://introtorx.com/>
 [Key types]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/KeyTypes.cs>
@@ -56,3 +62,4 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
 [Side effects]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/SideEffects.cs>
 [Advanced error handling]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/AdvancedErrorHandling.cs>
 [Combining sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/CombiningSequences.cs>
+[Time-shifted sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/TimeshiftedSequences.cs>

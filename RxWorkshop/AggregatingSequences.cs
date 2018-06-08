@@ -1,12 +1,11 @@
 ﻿using RxWorkshop.Extensions;
+using RxWorkshop.Helpers;
 using System;
-using System.Diagnostics.Eventing;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Forms;
-
 using static RxWorkshop.Helpers.Benchmarker;
 
 namespace RxWorkshop
@@ -105,31 +104,19 @@ namespace RxWorkshop
                 var moves = Observable.FromEventPattern<MouseEventArgs>(form, nameof(form.MouseMove));
                 var doubleClicks = Observable.FromEventPattern<EventArgs>(form, nameof(form.DoubleClick));
 
-                moves.TakeUntil(doubleClicks).Aggregate(
-                    (start: DateTime.Now, distance: 0, previous: new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0)),
-                    (accumulator, current) =>
-                    {
-                        accumulator.distance += Math.Abs(current.EventArgs.X - accumulator.previous.X);
-                        accumulator.previous = current.EventArgs;
+                moves.TakeUntil(doubleClicks)
+                    .Aggregate(
+                        (start: DateTime.Now, distance: 0, previous: new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0)),
+                        (accumulator, current) =>
+                        {
+                            accumulator.distance += Math.Abs(current.EventArgs.X - accumulator.previous.X);
+                            accumulator.previous = current.EventArgs;
 
-                        return accumulator;
-                    }).Subscribe(
-                    agg =>
-                    {
-                        var textBox = form.Controls.OfType<TextBox>().FirstOrDefault();
-                        textBox?.Invoke(
-                            new Action(
-                                () =>
-                                {
-                                    textBox.Text +=
-                                        $"Moused a total of {agg.distance} pixels over a time period of {DateTime.Now.Subtract(agg.start)}";
-                                }));
-                    },
-                    ex =>
-                    {
-                        var textBox = form.Controls.OfType<TextBox>().FirstOrDefault();
-                        textBox?.Invoke(new Action(() => textBox.Text += ex.Message));
-                    });
+                            return accumulator;
+                        })
+                    .Subscribe(
+                        agg => form.AppendToBox($"Moused a total of {agg.distance} pixels over a time period of {DateTime.Now.Subtract(agg.start)}"),
+                        ex => form.AppendToBox(ex.Message));
             }
 
             public static void Scan_IsJustAggregate_WithAllIntermediateSteps(Form form)
@@ -138,38 +125,20 @@ namespace RxWorkshop
                 var doubleClicks = Observable.FromEventPattern<EventArgs>(form, nameof(form.DoubleClick));
 
                 var start = DateTime.Now;
-                moves.TakeUntil(doubleClicks).Scan(
-                    (start, distance: 0, previous: new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0)),
-                    (accumulator, current) =>
-                    {
-                        accumulator.distance += Math.Abs(current.EventArgs.X - accumulator.previous.X);
-                        accumulator.previous = current.EventArgs;
-
-                        return accumulator;
-                    }).Subscribe(
-                    agg =>
-                    {
-                        var textBox = form.Controls.OfType<TextBox>().FirstOrDefault();
-                        textBox?.Invoke(
-                            new Action(
-                                () =>
-                                {
-                                    textBox.AppendText($"Moused a total of {agg.distance} pixels *so far* {Environment.NewLine}");
-                                }));
-                    },
-                    ex =>
-                    {
-                        var textBox = form.Controls.OfType<TextBox>().FirstOrDefault();
-                        textBox?.Invoke(new Action(() => textBox.Text += ex.Message));
-                    },
-                    () => {
-                        var textBox = form.Controls.OfType<TextBox>().FirstOrDefault();
-                        textBox?.Invoke(new Action(() =>
+                moves.TakeUntil(doubleClicks)
+                    .Scan(
+                        (start, distance: 0, previous: new MouseEventArgs(MouseButtons.None, 0, 0, 0, 0)),
+                        (accumulator, current) =>
                         {
-                            textBox.AppendText($"Moused over a time period of {DateTime.Now.Subtract(start)}");
-                            textBox.ScrollToCaret();
-                        }));
-                    });
+                            accumulator.distance += Math.Abs(current.EventArgs.X - accumulator.previous.X);
+                            accumulator.previous = current.EventArgs;
+
+                            return accumulator;
+                        })
+                    .Subscribe(
+                        agg => form.AppendToBox($"Moused a total of {agg.distance} pixels *so far*"),
+                        ex => form.AppendToBox(ex.Message),
+                        () => form.AppendToBox($"Moused over a time period of {DateTime.Now.Subtract(start)}"));
             }
         }
 

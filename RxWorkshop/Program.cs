@@ -122,6 +122,20 @@ namespace RxWorkshop
             //CombiningSequences.Pairing.Zip_CanAlsoPairASingleEmitingObservableWithElementsFromAnEnumerable_JustLikeItWasAQueue();
             //CombiningSequences.Pairing.AndThenWhen_MultiZippingMadeEasy();
 
+            //TimeshiftedSequences.Buffer_CanUseSize_TheSimplestWayForPairwise();
+            //TimeshiftedSequences.Buffer_CanUseTimeTrigger();
+            //TimeshiftedSequences.Buffer_CanBeUsedWithEitherATimeOrSizeTrigger();
+            //TimeshiftedSequences.Buffer_Overlapping_WhenSkipIsLessThanCount();
+            //TimeshiftedSequences.Buffer_Rolling_WhenSkipIsEqualToCount();
+            //TimeshiftedSequences.Buffer_Skipped_WhenSkipIsGreaterThanCount();
+            //TimeshiftedSequences.Buffer_TimeTriggeredSequences_OverlappingRollingSkipped();
+            //TimeshiftedSequences.Delay_WillTimeshift_ThusPreservingIntervalsBetweenItemsInSequence();
+            //TimeshiftedSequences.Sample_TamesOverproducingSequences_Backpressure();
+            //WithUI -> TimeshiftedSequences.Throttle_GuardsAgainstPeaks_IsGreatForUserInteraction();
+            //TimeshiftedSequences.Timeout_WillTimeOutOnVariableRateSequences();
+            //TimeshiftedSequences.Timeout_CanBeAbsolute();
+            //TimeshiftedSequences.Timeout_CanContinueWithAnotherSequence();
+
             Console.ReadLine();
         }
     }

@@ -318,19 +318,8 @@ namespace RxWorkshop
             {
                 Observable.FromEventPattern<MouseEventArgs>(form, nameof(form.MouseClick))
                           .Subscribe(
-                                mm =>
-                                {
-                                    var textBox = form.Controls.OfType<TextBox>().FirstOrDefault();
-                                    textBox?.Invoke(
-                                        new Action(
-                                            () => { textBox.Text += $"Clicked @ {mm.EventArgs.X} - {mm.EventArgs.Y}{Environment.NewLine}"; }
-                                        ));
-                                },
-                                ex =>
-                                {
-                                    var textBox = form.Controls.OfType<TextBox>().FirstOrDefault();
-                                    textBox?.Invoke(new Action(() => textBox.Text += ex.Message));
-                                });
+                                mm => form.AppendToBox($"Clicked @ {mm.EventArgs.X} - {mm.EventArgs.Y}"),
+                                ex => form.AppendToBox(ex.Message));
             }
 
             public static void TaskToObservable_IsASwitchBetweenDomains_ThatOnlyWorksForHotTasks_AndDoesSoWithNoSubscriptionNecessary()
