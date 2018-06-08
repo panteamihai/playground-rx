@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RxWorkshop.Helpers;
+using System;
+using System.Reactive.Linq;
 
 namespace RxWorkshop.Extensions
 {
@@ -10,6 +12,11 @@ namespace RxWorkshop.Extensions
                 i => Console.WriteLine($"{name} --> {i}"),
                 ex => Console.WriteLine($"{name} failed! --> {ex.Message}"),
                 () => Console.WriteLine($"{name} completed @{DateTime.Now.ToUniversalTime().ToString()}"));
+        }
+
+        public static IObservable<T> DecorateWithTime<T>(this IObservable<T> source)
+        {
+            return source.Do(i => { Get.Now(); });
         }
     }
 }

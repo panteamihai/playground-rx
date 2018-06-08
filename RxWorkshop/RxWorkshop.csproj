@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="AdvancedErrorHandling.cs" />
     <Compile Include="AggregatingSequences.cs" />
+    <Compile Include="CombiningSequences.cs" />
     <Compile Include="Helpers\Benchmark.cs" />
     <Compile Include="Helpers\Disposable.cs" />
     <Compile Include="Helpers\Get.cs" />

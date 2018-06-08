@@ -110,6 +110,18 @@ namespace RxWorkshop
             //AdvancedErrorHandling.OnErrorResumeNext_ProvidesAFallBack();
             //AdvancedErrorHandling.Retry_IsTricky();
 
+            //CombiningSequences.Sequential.Concat_RequiresSequentialCompletionOfStichedObservables();
+            //CombiningSequences.Sequential.Concat_WorksWellWithLazilyEvaluatedSequences();
+            //CombiningSequences.Sequential.Repeat_RequiresNormalCompletion();
+            //CombiningSequences.Sequential.StartWith_PreprendsValuesToASequence_JustLikeBehaviorSubject();
+            //CombiningSequences.Concurrent.Amb_IsTheQuintessentialFirstWins();
+            //CombiningSequences.Concurrent.Merge_InterleavesObservableResults();
+            //CombiningSequences.Concurrent.Switch_AlwaysEmitsFromTheMostRecentSequence();
+            //CombiningSequences.Pairing.CombineLatest_EmitsWheneverOneOfThePairedSequencesEmits();
+            //CombiningSequences.Pairing.Zip_OnlyEmitsWheneverBothOfThePairedSequencesEmit();
+            //CombiningSequences.Pairing.Zip_CanAlsoPairASingleEmitingObservableWithElementsFromAnEnumerable_JustLikeItWasAQueue();
+            //CombiningSequences.Pairing.AndThenWhen_MultiZippingMadeEasy();
+
             Console.ReadLine();
         }
     }
