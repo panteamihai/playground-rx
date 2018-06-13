@@ -122,7 +122,7 @@ namespace RxWorkshop
             //CombiningSequences.Pairing.Zip_CanAlsoPairASingleEmitingObservableWithElementsFromAnEnumerable_JustLikeItWasAQueue();
             //CombiningSequences.Pairing.AndThenWhen_MultiZippingMadeEasy();
 
-            //TimeshiftedSequences.Buffer_CanUseSize_TheSimplestWayForPairwise();
+            //TimeshiftedSequences.Buffer_CanUseSizeTrigger_TheSimplestWayForPairwise();
             //TimeshiftedSequences.Buffer_CanUseTimeTrigger();
             //TimeshiftedSequences.Buffer_CanBeUsedWithEitherATimeOrSizeTrigger();
             //TimeshiftedSequences.Buffer_Overlapping_WhenSkipIsLessThanCount();
@@ -135,6 +135,30 @@ namespace RxWorkshop
             //TimeshiftedSequences.Timeout_WillTimeOutOnVariableRateSequences();
             //TimeshiftedSequences.Timeout_CanBeAbsolute();
             //TimeshiftedSequences.Timeout_CanContinueWithAnotherSequence();
+
+            //HotAndColdObservables.HotIsEager_ColdIsLazy_InTheEnumerableObservableDuality();
+            //HotAndColdObservables.Publish_ConnectShouldBeCalledAfterAllSubscribersSubscribe();
+            //HotAndColdObservables.Publish_CallingDisposeTogglesTheSequenceOff();
+            //HotAndColdObservables.Publish_SequenceDoesNotEndWhenLastSubscriberDisconnects();
+            //HotAndColdObservables.Publish_RefCount_WillDisposeWhenNoMoreSubscribers_ButWillAlsoConnectOnlyOnFirstSubscriber();
+            //HotAndColdObservables.PublishLast_IsAHotVersionLastAsync();
+            //HotAndColdObservables.Replay_WrapsAHotObservableInAReplayableOne();
+            //HotAndColdObservables.Multicast_AllowsYouToWrapColdSequencesInSubjectBehaviors();
+
+            //Scheduling.RxIsFreeThreaded_ButSingleThreadedByDefault();
+            //Scheduling.RxIsSynchronousByDefault();
+            //Scheduling.SubscribeOn_WillScheduleTheSubscriptionWarmUpCode_OnTheReceivedScheduler_MakingPostSubscriptionProcessingNonBlocking();
+            //Scheduling.SubscribeOn_WillNotChangeTheThreadForProcessingByDefault();
+            //Scheduling.ObserveOn_WillScheduleProcessing_OnTheReceivedScheduler_MakingSubscriptionProcessingNonBlocking();
+            //Scheduling.ImmediateScheduler_DoesntActuallyDoAnyScheduling_MakingStuffBlocking_DeadlockMaterial();
+            //Scheduling.CurrentThreadScheduler_QueuesSuccessivelyScheduledActions_EffectivelyDoingOutOfOrderExecution_ButNoMoreDeadlocks();
+            //Scheduling.CurrentThreadScheduler_vs_ImmediateScheduler();
+            //Scheduling.EventLoopScheduler_IsSimilarToCurrentThreadScheduler_ButYouProvideTheThread();
+            //Scheduling.EventLoopScheduler_vs_CurrentThreadScheduler();
+            //Scheduling.NewThreadScheduler_BuildsNewEventLoopSchedulers_ForEachTopLevelScheduledActions();
+            //Scheduling.ThreadPoolScheduler_SchedulesStuffASAP_OnTheThreadPool();
+            //Scheduling.TaskPoolScheduler_LikeTheThreadPoolScheduler_DoesntGuaranteeSameThreadForNestedActions();
+            //WithUI -> Scheduling.DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread();
 
             Console.ReadLine();
         }

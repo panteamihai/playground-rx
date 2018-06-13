@@ -1,12 +1,14 @@
 ﻿using RxWorkshop.Extensions;
+using RxWorkshop.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
+
+using Disposable = System.Reactive.Disposables.Disposable;
 
 namespace RxWorkshop
 {
@@ -137,8 +139,8 @@ namespace RxWorkshop
                 var upper = Observable.Interval(TimeSpan.FromMilliseconds(1300))
                                       .Take(4)
                                       .Select(i => (char)(i + 97));
-
-                lower.CombineLatest(upper, (l, u) => l + " " + u).DecorateWithTime().Dump("CoLe");
+                Get.Now();
+                lower.CombineLatest(upper, (l, u) => l + " " + u).DecorateWithTime().Dump("CoLa");
             }
 
             public static void Zip_OnlyEmitsWheneverBothOfThePairedSequencesEmit()

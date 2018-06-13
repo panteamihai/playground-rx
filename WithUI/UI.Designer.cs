@@ -34,6 +34,7 @@
             this.btnAggregate = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
             this.btnThrottle = new System.Windows.Forms.Button();
+            this.btnDispatcher = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnContextDisposable
@@ -51,7 +52,7 @@
             this.txtOutput.Location = new System.Drawing.Point(254, 12);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(413, 266);
+            this.txtOutput.Size = new System.Drawing.Size(413, 282);
             this.txtOutput.TabIndex = 1;
             // 
             // btnFromEventPattern
@@ -94,11 +95,22 @@
             this.btnThrottle.UseVisualStyleBackColor = true;
             this.btnThrottle.Click += new System.EventHandler(this.BtnThrottleClick);
             // 
+            // btnDispatcher
+            // 
+            this.btnDispatcher.Location = new System.Drawing.Point(12, 252);
+            this.btnDispatcher.Name = "btnDispatcher";
+            this.btnDispatcher.Size = new System.Drawing.Size(236, 42);
+            this.btnDispatcher.TabIndex = 6;
+            this.btnDispatcher.Text = "Run Dispatcher example";
+            this.btnDispatcher.UseVisualStyleBackColor = true;
+            this.btnDispatcher.Click += new System.EventHandler(this.BtnDispatcherClick);
+            // 
             // UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(674, 286);
+            this.ClientSize = new System.Drawing.Size(674, 306);
+            this.Controls.Add(this.btnDispatcher);
             this.Controls.Add(this.btnThrottle);
             this.Controls.Add(this.btnScan);
             this.Controls.Add(this.btnAggregate);
@@ -120,6 +132,7 @@
         private System.Windows.Forms.Button btnAggregate;
         private System.Windows.Forms.Button btnScan;
         private System.Windows.Forms.Button btnThrottle;
+        private System.Windows.Forms.Button btnDispatcher;
     }
 }
 

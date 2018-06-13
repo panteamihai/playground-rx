@@ -39,5 +39,10 @@ namespace WithUI
         {
             TimeshiftedSequences.Throttle_GuardsAgainstPeaks_IsGreatForUserInteraction(this);
         }
+
+        private void BtnDispatcherClick(object sender, EventArgs e)
+        {
+            Scheduling.DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread(this);
+        }
     }
 }

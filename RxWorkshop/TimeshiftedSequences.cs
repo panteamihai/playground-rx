@@ -24,7 +24,7 @@ namespace RxWorkshop
 
         public static void Buffer_CanUseTimeTrigger()
         {
-            var source = Observable.Interval(TimeSpan.FromMilliseconds(450));
+            var source = Observable.Interval(TimeSpan.FromMilliseconds(450)).Take(28);
             source.Dump("Source");
 
             source
@@ -117,7 +117,8 @@ namespace RxWorkshop
         public static void Timeout_WillTimeOutOnVariableRateSequences()
         {
             var source = Observable.Interval(TimeSpan.FromMilliseconds(100)).Take(10)
-                .Concat(Observable.Interval(TimeSpan.FromSeconds(2)));
+                    .Concat(Observable.Interval(TimeSpan.FromSeconds(2)));
+                    //.Merge(Observable.Interval(TimeSpan.FromSeconds(2)));
             var timeout = source.Timeout(TimeSpan.FromSeconds(1));
             timeout.Subscribe(
                 Console.WriteLine,

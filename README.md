@@ -50,6 +50,16 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
     * Simple time shifting with `Delay`
     * `Sample` vs. `Throttle`
     * `Timeout` and the beauty of operator composure
+* [Temperature]
+    * Use `Publish` and `Connect` for taming hotness
+    * Use `Publish` and `RefCount` for the added benefit of *the last guy turns off the light*
+    * Discover `Multicast` and its power
+* [Scheduling]
+    * Rx is **single threaded** and **synchronous** by default
+    * `SubscribeOn` is for scheduling the subscription code (like for `Observable.Create`)
+    * `ObserveOn` is for moving the processing to another thread
+    * `ImmediateScheduler` vs. `CurrentThreadScheduler`, `EventLoopScheduler` vs. `NewThreadScheduler`
+    * `ThreadPoolScheduler`vs. `TaskPoolScheduler`, `DispatcherScheduler`
 
 [Intro to Rx]: <http://introtorx.com/>
 [Key types]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/KeyTypes.cs>
@@ -63,3 +73,5 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
 [Advanced error handling]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/AdvancedErrorHandling.cs>
 [Combining sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/CombiningSequences.cs>
 [Time-shifted sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/TimeshiftedSequences.cs>
+[Temperature]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/HotAndColdObservables.cs>
+[Scheduling]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/Scheduling.cs>
