@@ -76,7 +76,7 @@
     <Compile Include="Helpers\Disposable.cs" />
     <Compile Include="Helpers\Get.cs" />
     <Compile Include="Extensions\FormExtensions.cs" />
-    <Compile Include="HotAndColdObservables.cs" />
+    <Compile Include="Temperature.cs" />
     <Compile Include="InspectingSequences.cs" />
     <Compile Include="ReducingSequences.cs" />
     <Compile Include="CreatingSequences.cs" />

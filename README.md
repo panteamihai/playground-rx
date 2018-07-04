@@ -58,7 +58,7 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
     * Rx is **single threaded** and **synchronous** by default
     * `SubscribeOn` is for scheduling the subscription code (like for `Observable.Create`)
     * `ObserveOn` is for moving the processing to another thread
-    * `ImmediateScheduler` vs. `CurrentThreadScheduler`, `EventLoopScheduler` vs. `NewThreadScheduler`
+    * `ImmediateScheduler` [vs.] `CurrentThreadScheduler`, `EventLoopScheduler` vs. `NewThreadScheduler`
     * `ThreadPoolScheduler`vs. `TaskPoolScheduler`, `DispatcherScheduler`
 * [Testing]
     * Virtual time and how to control it: `AdvanceTo` vs. `AdvanceBy`, `Start`
@@ -77,6 +77,7 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
 [Advanced error handling]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/AdvancedErrorHandling.cs>
 [Combining sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/CombiningSequences.cs>
 [Time-shifted sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/TimeshiftedSequences.cs>
-[Temperature]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/HotAndColdObservables.cs>
+[Temperature]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/Temperature.cs>
 [Scheduling]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/Scheduling.cs>
 [Testing]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/Testing.cs>
+[vs.]: <https://social.msdn.microsoft.com/Forums/en-US/7f75482f-eff2-4938-9491-47fe870989e8/currentthreadscheduler-vs-immediatescheduler?forum=rx>

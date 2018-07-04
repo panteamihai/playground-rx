@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace RxWorkshop
 {
-    public class HotAndColdObservables
+    public class Temperature
     {
         public static void HotIsEager_ColdIsLazy_InTheEnumerableObservableDuality()
         {
@@ -132,6 +132,38 @@ namespace RxWorkshop
             Console.WriteLine("Press any key to unsubscribe.");
             Console.ReadKey();
             subscription.Dispose();
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
+        }
+
+        public static void Publish_RefCount_StillMaintainsTheHotBehavior()
+        {
+            var period = TimeSpan.FromSeconds(1);
+            var observable = Observable.Interval(period)
+                .Do(l => Console.WriteLine($"Publishing {l}")) //Side effect to show it is running
+                .Publish()
+                .RefCount();
+
+            Console.WriteLine("Press any key to subscribe.");
+            Console.ReadKey();
+
+            var subscription1 = observable.Subscribe(i => Console.WriteLine($"Subscription1 : {i}"));
+
+            Console.WriteLine("Press any key to subscribe again.");
+            Console.ReadKey();
+
+            var subscription2 = observable.Subscribe(i => Console.WriteLine($"Subscription2 : {i}"));
+
+            Console.WriteLine("Press any key to unsubscribe from one subscription.");
+            Console.ReadKey();
+
+            subscription1.Dispose();
+
+            Console.WriteLine("Press any key to unsubscribe from the last subscription.");
+            Console.ReadKey();
+
+            subscription2.Dispose();
+
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
 

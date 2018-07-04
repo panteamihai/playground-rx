@@ -136,14 +136,15 @@ namespace RxWorkshop
             //TimeshiftedSequences.Timeout_CanBeAbsolute();
             //TimeshiftedSequences.Timeout_CanContinueWithAnotherSequence();
 
-            //HotAndColdObservables.HotIsEager_ColdIsLazy_InTheEnumerableObservableDuality();
-            //HotAndColdObservables.Publish_ConnectShouldBeCalledAfterAllSubscribersSubscribe();
-            //HotAndColdObservables.Publish_CallingDisposeTogglesTheSequenceOff();
-            //HotAndColdObservables.Publish_SequenceDoesNotEndWhenLastSubscriberDisconnects();
-            //HotAndColdObservables.Publish_RefCount_WillDisposeWhenNoMoreSubscribers_ButWillAlsoConnectOnlyOnFirstSubscriber();
-            //HotAndColdObservables.PublishLast_IsAHotVersionLastAsync();
-            //HotAndColdObservables.Replay_WrapsAHotObservableInAReplayableOne();
-            //HotAndColdObservables.Multicast_AllowsYouToWrapColdSequencesInSubjectBehaviors();
+            //Temperature.HotIsEager_ColdIsLazy_InTheEnumerableObservableDuality();
+            //Temperature.Publish_ConnectShouldBeCalledAfterAllSubscribersSubscribe();
+            //Temperature.Publish_CallingDisposeTogglesTheSequenceOff();
+            //Temperature.Publish_SequenceDoesNotEndWhenLastSubscriberDisconnects();
+            //Temperature.Publish_RefCount_WillDisposeWhenNoMoreSubscribers_ButWillAlsoConnectOnlyOnFirstSubscriber();
+            //Temperature.Publish_RefCount_StillMaintainsTheHotBehavior();
+            //Temperature.PublishLast_IsAHotVersionLastAsync();
+            //Temperature.Replay_WrapsAHotObservableInAReplayableOne();
+            //Temperature.Multicast_AllowsYouToWrapColdSequencesInSubjectBehaviors();
 
             //Scheduling.RxIsFreeThreaded_ButSingleThreadedByDefault();
             //Scheduling.RxIsSynchronousByDefault();
