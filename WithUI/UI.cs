@@ -1,4 +1,5 @@
 ﻿using RxWorkshop;
+using RxWorkshop.Extensions;
 using System;
 using System.Threading;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace WithUI
 
         private void BtnContextDisposableClick(object sender, EventArgs e)
         {
-            txtOutput.Text = $"The UI Thread ID is: {Thread.CurrentThread.ManagedThreadId}{Environment.NewLine}";
+            txtOutput.Text = $@"The UI Thread ID is: {Thread.CurrentThread.ManagedThreadId}{Environment.NewLine}";
 
             var logging = new Action<string>(message => txtOutput.Invoke(new Action(() => txtOutput.Text += message + Environment.NewLine)));
             LifetimeManagement.ContextDisposable_WillExecuteItsDisposableImplementation_OnTheSpecifiedSynchronizationContext(logging);
@@ -43,6 +44,16 @@ namespace WithUI
         private void BtnDispatcherClick(object sender, EventArgs e)
         {
             Scheduling.DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread(this);
+        }
+
+        private void BtnTestingHappyFlowClick(object sender, EventArgs e)
+        {
+            Testing.Testing_HappyFlow_InjectingControllingSchedulers(this, this.AppendToBox);
+        }
+
+        private void BtnTestingExceptionFlowClick(object sender, EventArgs e)
+        {
+            Testing.Testing_ExceptionFlow_InjectingControllingSchedulers(this, this.AppendToBox);
         }
     }
 }

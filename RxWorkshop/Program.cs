@@ -160,6 +160,17 @@ namespace RxWorkshop
             //Scheduling.TaskPoolScheduler_LikeTheThreadPoolScheduler_DoesntGuaranteeSameThreadForNestedActions();
             //WithUI -> Scheduling.DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread();
 
+            //Testing.AdvanceTo_WillExecuteAllQueuedActions_UpToAnAbsoluteTime_SpecifiedInTicks();
+            //Testing.AdvanceBy_WillMoveTheInternalClockAhead_ByARelativeAmount_SpecifiedInTicks();
+            //Testing.Start_WillRunAllActions_StopingAtTheLastOne();
+            //Testing.Start_WillRunActionsScheduledAfterItsCall_OnlyWithASubsequentCall();
+            //Testing.Stop_WillPreventFurtherScheduledActions_FromTakingPlace();
+            //Testing.Collisions_AreHandled_InTheOrderTheyWereScheduled();
+            //Testing.InjectingTestScheduler_AndManipulatingVirtualTime_HappensInstantly();
+            //Testing.TestableObserver_Start_CanBeUsedToControl_TheCreationSubscriptionAndDisposal_OfASourceObservable();
+            //Testing.CreateColdObservable_CanBeUsedToSimulateTheBehaviourOfAPipeline_GivenAPredictableAndControlledSource();
+            //Testing.CreateHotObservable_HotBehaviorInfluences_SubscriptionTimeVeryMuchSo();
+
             Console.ReadLine();
         }
     }

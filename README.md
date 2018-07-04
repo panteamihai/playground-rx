@@ -60,6 +60,10 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
     * `ObserveOn` is for moving the processing to another thread
     * `ImmediateScheduler` vs. `CurrentThreadScheduler`, `EventLoopScheduler` vs. `NewThreadScheduler`
     * `ThreadPoolScheduler`vs. `TaskPoolScheduler`, `DispatcherScheduler`
+* [Testing]
+    * Virtual time and how to control it: `AdvanceTo` vs. `AdvanceBy`, `Start`
+    * Testing pipelines by mocking its schedulers with `TestScheduler`
+    * The `ITestableObserver` interface and controlling replay
 
 [Intro to Rx]: <http://introtorx.com/>
 [Key types]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/KeyTypes.cs>
@@ -75,3 +79,4 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
 [Time-shifted sequences]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/TimeshiftedSequences.cs>
 [Temperature]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/HotAndColdObservables.cs>
 [Scheduling]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/Scheduling.cs>
+[Testing]: <https://github.com/panteamihai/workshop-rx/blob/master/RxWorkshop/Testing.cs>

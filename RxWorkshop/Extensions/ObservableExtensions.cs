@@ -1,4 +1,5 @@
-﻿using RxWorkshop.Helpers;
+﻿using Microsoft.Reactive.Testing;
+using RxWorkshop.Helpers;
 using System;
 using System.Globalization;
 using System.Reactive.Linq;
@@ -23,6 +24,22 @@ namespace RxWorkshop.Extensions
         public static IObservable<T> DecorateWithTime<T>(this IObservable<T> source)
         {
             return source.Do(i => { Get.Now(); });
+        }
+
+        public static void RunOn<T>(this IObservable<T> source, TestScheduler scheduler, long creationTick = 0, long subscriptionTick = 0, long disposalTick = 0)
+        {
+            var testObserver = scheduler.Start(
+                () => source,
+                creationTick,
+                subscriptionTick,
+                disposalTick);
+
+            Console.WriteLine("Time is {0} ticks", scheduler.Clock);
+            Console.WriteLine("Received {0} notifications", testObserver.Messages.Count);
+            foreach (var message in testObserver.Messages)
+            {
+                Console.WriteLine("{0} @ {1}", message.Value, message.Time);
+            }
         }
     }
 }

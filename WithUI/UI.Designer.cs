@@ -35,6 +35,8 @@
             this.btnScan = new System.Windows.Forms.Button();
             this.btnThrottle = new System.Windows.Forms.Button();
             this.btnDispatcher = new System.Windows.Forms.Button();
+            this.btnHappy = new System.Windows.Forms.Button();
+            this.btnException = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnContextDisposable
@@ -52,7 +54,7 @@
             this.txtOutput.Location = new System.Drawing.Point(254, 12);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(413, 282);
+            this.txtOutput.Size = new System.Drawing.Size(413, 330);
             this.txtOutput.TabIndex = 1;
             // 
             // btnFromEventPattern
@@ -105,11 +107,33 @@
             this.btnDispatcher.UseVisualStyleBackColor = true;
             this.btnDispatcher.Click += new System.EventHandler(this.BtnDispatcherClick);
             // 
+            // btnHappy
+            // 
+            this.btnHappy.Location = new System.Drawing.Point(12, 300);
+            this.btnHappy.Name = "btnHappy";
+            this.btnHappy.Size = new System.Drawing.Size(118, 42);
+            this.btnHappy.TabIndex = 7;
+            this.btnHappy.Text = "Run happy example";
+            this.btnHappy.UseVisualStyleBackColor = true;
+            this.btnHappy.Click += new System.EventHandler(this.BtnTestingHappyFlowClick);
+            // 
+            // btnException
+            // 
+            this.btnException.Location = new System.Drawing.Point(130, 300);
+            this.btnException.Name = "btnException";
+            this.btnException.Size = new System.Drawing.Size(118, 42);
+            this.btnException.TabIndex = 8;
+            this.btnException.Text = "Run sad example";
+            this.btnException.UseVisualStyleBackColor = true;
+            this.btnException.Click += new System.EventHandler(this.BtnTestingExceptionFlowClick);
+            // 
             // UI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(674, 306);
+            this.ClientSize = new System.Drawing.Size(674, 351);
+            this.Controls.Add(this.btnException);
+            this.Controls.Add(this.btnHappy);
             this.Controls.Add(this.btnDispatcher);
             this.Controls.Add(this.btnThrottle);
             this.Controls.Add(this.btnScan);
@@ -133,6 +157,8 @@
         private System.Windows.Forms.Button btnScan;
         private System.Windows.Forms.Button btnThrottle;
         private System.Windows.Forms.Button btnDispatcher;
+        private System.Windows.Forms.Button btnHappy;
+        private System.Windows.Forms.Button btnException;
     }
 }
 
