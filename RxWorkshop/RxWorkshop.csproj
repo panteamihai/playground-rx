@@ -76,6 +76,7 @@
     <Compile Include="Helpers\Disposable.cs" />
     <Compile Include="Helpers\Get.cs" />
     <Compile Include="Extensions\FormExtensions.cs" />
+    <Compile Include="SequencesOfCoincidence.cs" />
     <Compile Include="Temperature.cs" />
     <Compile Include="InspectingSequences.cs" />
     <Compile Include="ReducingSequences.cs" />

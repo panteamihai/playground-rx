@@ -172,6 +172,15 @@ namespace RxWorkshop
             //Testing.CreateColdObservable_CanBeUsedToSimulateTheBehaviourOfAPipeline_GivenAPredictableAndControlledSource();
             //Testing.CreateHotObservable_HotBehaviorInfluences_SubscriptionTimeVeryMuchSo();
 
+            //SequencesOfCoincidence.Window_IntoTheSoul();
+            //SequencesOfCoincidence.Window_FlatteningBackIntoTheOriginalSequence_UsingSwitchMergeOrConcat_RegardlessOfWhich();
+            //SequencesOfCoincidence.Window_CustomClosingWindowMechanism();
+            //SequencesOfCoincidence.Window_NaiveImplementationOfFixedSizeWindowingOperator();
+            //SequencesOfCoincidence.Window_NaiveImplementationOfFixedSizeWindowingOperator_WithSkip();
+            //SequencesOfCoincidence.Window_NaiveImplementationOfFixedSizeBufferingOperator();
+            //SequencesOfCoincidence.Join_AllowsYouToJoinSequencesByIntersectingWindows_LikeInANaiveCombineLatest();
+            //SequencesOfCoincidence.GroupJoin_NaiveImplementationOfJoin();
+
             Console.ReadLine();
         }
     }
