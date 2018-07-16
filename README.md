@@ -58,6 +58,7 @@ We're walking the path set forth by Lee Campbell's [Intro to Rx].
     * Rx is **single threaded** and **synchronous** by default
     * `SubscribeOn` is for scheduling the subscription code (like for `Observable.Create`)
     * `ObserveOn` is for moving the processing to another thread
+    * Advanced scheduling concepts: passing state, cancellation, recursion
     * `ImmediateScheduler` [vs.] `CurrentThreadScheduler`, `EventLoopScheduler` vs. `NewThreadScheduler`
     * `ThreadPoolScheduler`vs. `TaskPoolScheduler`, `DispatcherScheduler`
 * [Testing]

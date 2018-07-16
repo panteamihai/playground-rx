@@ -41,9 +41,14 @@ namespace WithUI
             TimeshiftedSequences.Throttle_GuardsAgainstPeaks_IsGreatForUserInteraction(this);
         }
 
+        private void BtnDeadlockClick(object sender, EventArgs e)
+        {
+            new BrokenUI().ShowDialog();
+        }
+
         private void BtnDispatcherClick(object sender, EventArgs e)
         {
-            Scheduling.DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread(this);
+            Scheduling.Schedulers.DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread(this);
         }
 
         private void BtnTestingHappyFlowClick(object sender, EventArgs e)

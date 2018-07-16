@@ -1,10 +1,12 @@
 ﻿using RxWorkshop.Extensions;
 using RxWorkshop.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
 
@@ -146,216 +148,377 @@ namespace RxWorkshop
             Console.WriteLine($"Post-subscription processing on [{Thread.CurrentThread.ManagedThreadId}]");
         }
 
-        public static void ImmediateScheduler_DoesntActuallyDoAnyScheduling_MakingStuffBlocking_DeadlockMaterial()
+        public static void ConcurrencyPitfall_SynchronousOperators_CauseRaceConditions_AndUsualyDeadlock()
         {
-            //Execution Context: Current Thread
-            //Execution Policy: Immediate
-            //Clock: Machine Time
+            var sequence = new Subject<int>();
+            Console.WriteLine("Next line should lock the system.");
 
-            Console.WriteLine("Before");
-            Observable.Interval(TimeSpan.FromMilliseconds(250), ImmediateScheduler.Instance).Take(6).Dump("Interval on ImmediateScheduler");
-            Console.WriteLine("After");
+            var value = sequence.First(); //blocking wait for a value
+
+            sequence.OnNext(1); //value never getting to be produced
+            Console.WriteLine("I can never execute....");
         }
 
-        public static void CurrentThreadScheduler_QueuesSuccessivelyScheduledActions_EffectivelyDoingOutOfOrderExecution_ButNoMoreDeadlocks()
+        public static class AdvancedScheduling
         {
-            //Execution Context: Current Thread
-            //Execution Policy: FIFO (trampolined  / message queue)
-            //Clock: Machine Time
-
-            Console.WriteLine("Before");
-            Observable.Interval(TimeSpan.FromMilliseconds(250), CurrentThreadScheduler.Instance).Take(6).Dump("Interval on CurrentThreadScheduler");
-            Console.WriteLine("After");
-        }
-
-        public static void ScheduleTasks(IScheduler scheduler)
-        {
-            Action leafAction = () =>
+            public static void PassingState_ByCapturingClosure_IsNonDeterministic()
             {
-                Get.CurrentThread();
-                Console.WriteLine("----leafAction.");
-            };
-            Action innerAction = () =>
+                var dinosaur = "Carnotaurus";
+
+                var scheduler = NewThreadScheduler.Default;
+                //var scheduler = ImmediateScheduler.Instance;
+
+                scheduler.Schedule(() => Console.WriteLine("Dinosaur = {0}", dinosaur));
+                dinosaur = "Edmontonia";
+            }
+
+            public static void PassingState_ThroughValueTypeParameter_IsDeterministic_AndCanBeCancelled()
             {
-                Get.CurrentThread();
-                Console.WriteLine("--innerAction start.");
-                scheduler.Schedule(leafAction);
-                Console.WriteLine("--innerAction end.");
-            };
-            Action outerAction = () =>
+                var dinosaur = "Carnotaurus";
+
+                var scheduler = NewThreadScheduler.Default;
+                //var scheduler = ImmediateScheduler.Instance;
+
+                scheduler.Schedule(
+                    dinosaur,
+                    (_, state) =>
+                    {
+                        Console.WriteLine(state);
+                        return Disposable.Empty;
+                    });
+
+                dinosaur = "Edmontonia";
+            }
+
+            public static void PassingState_ThroughReferenceTypeParameter_IsAgainNonDeterministic_MutableSharedStateIsTrullyWack()
             {
-                Get.CurrentThread();
-                Console.WriteLine("outer start.");
-                scheduler.Schedule(innerAction);
-                Console.WriteLine("outer end.");
-            };
-            scheduler.Schedule(outerAction);
-        }
+                var list = new List<int>();
 
-        public static void CurrentThreadScheduler_vs_ImmediateScheduler()
-        {
-            ScheduleTasks(CurrentThreadScheduler.Instance);
-            /*Output:
-            outer start. on the specified thread
-            outer end.
-            --innerAction start.
-            --innerAction end.
-            ----leafAction.
-            */
+                var scheduler = NewThreadScheduler.Default;
+                //var scheduler = ImmediateScheduler.Instance;
 
-            Console.ReadLine();
-            ScheduleTasks(ImmediateScheduler.Instance);
-            /*Output:
-            outer start.
-            --innerAction start.
-            ----leafAction.
-            --innerAction end.
-            outer end.
-            */
-        }
+                scheduler.Schedule(
+                    list,
+                    (_, state) =>
+                    {
+                        Console.WriteLine(state.Count);
+                        return Disposable.Empty;
+                    });
 
-        public static void EventLoopScheduler_IsSimilarToCurrentThreadScheduler_ButYouProvideTheThread()
-        {
-            //Execution Context: Dedicated (i.e. provided) Thread
-            //Execution Policy: FIFO (trampolined  / message queue)
-            //Clock: Machine Time
+                list.Add(1);
+            }
 
-            Console.WriteLine("Before");
-            Observable.Using(
-                () => new EventLoopScheduler(),
-                els => Observable.Interval(TimeSpan.FromMilliseconds(250), els).Take(6))
-                .Dump("Interval on EventLoopScheduler");
-            Console.WriteLine("After");
-        }
-
-        public static void EventLoopScheduler_vs_CurrentThreadScheduler()
-        {
-            ScheduleTasks(new EventLoopScheduler());
-            /*Output:
-            outer start. on specified thread
-            outer end.
-            --innerAction start. on specified thread
-            --innerAction end.
-            ----leafAction. on specified thread
-            */
-
-            Console.ReadLine();
-
-            ScheduleTasks(CurrentThreadScheduler.Instance);
-            /*Output:
-            outer start.
-            outer end.
-            --innerAction start.
-            --innerAction end.
-            ----leafAction.
-            */
-        }
-
-        public static void NewThreadScheduler_BuildsNewEventLoopSchedulers_ForEachTopLevelScheduledActions()
-        {
-            //Execution Context: Dedicated (i.e. provided) Thread
-            //Execution Policy: FIFO (trampolined  / message queue)
-            //Clock: Machine Time
-
-            Console.WriteLine("Before");
-            var newThreadScheduler = new NewThreadScheduler();
-
-            ScheduleTasksWithPassedOnScheduler(newThreadScheduler);
-            /*Output:
-            outer start. on thread T0
-            outer end.
-            --innerAction start. on thread T0
-            --innerAction end.
-            ----leafAction. on thread T0
-            */
-
-            Console.ReadLine();
-            ScheduleTasksWithPassedOnScheduler(newThreadScheduler);
-            /*Output:
-            outer start. on thread T1
-            outer end.
-            --innerAction start. on thread T1
-            --innerAction end.
-            ----leafAction. on thread T1
-            */
-
-            Console.WriteLine("After");
-        }
-
-        public static void ScheduleTasksWithPassedOnScheduler(IScheduler scheduler)
-        {
-            Func<IScheduler, string, IDisposable> leafAction = (sch, state) =>
+            public static void ActionsCanBeScheduled_InTheFuture()
             {
-                Get.CurrentThread();
-                Console.WriteLine("----leafAction. " + state);
+                var scheduler = NewThreadScheduler.Default;
+                //var scheduler = CurrentThreadScheduler.Instance; //You can play around with various schedulers to see the result (watch the thread)
 
-                return Disposable.Empty;
-            };
-            Func<IScheduler, string, IDisposable> innerAction = (sch, state) =>
+                var delay = TimeSpan.FromSeconds(1);
+
+                Console.WriteLine($"Before schedule at {DateTime.Now:o}");
+
+                scheduler.Schedule(delay, () => Console.WriteLine($"Inside schedule at {DateTime.Now:o}"));
+
+                Console.WriteLine($"After schedule at  {DateTime.Now:o}");
+            }
+
+            public static void Cancellation_WillRemoveScheduledButNotYetStartedWork_FromTheSchedulerQueue()
             {
-                Get.CurrentThread();
-                Console.WriteLine("--innerAction start.");
-                sch.Schedule(state, leafAction);
-                Console.WriteLine("--innerAction end.");
+                var scheduler = NewThreadScheduler.Default;
+                //var scheduler = CurrentThreadScheduler.Instance; //You can play around with various schedulers to see the result (watch the thread)
 
-                return Disposable.Empty;
-            };
-            Func<IScheduler, string, IDisposable> outerAction = (sch, state) =>
+                var delay = TimeSpan.FromSeconds(1);
+
+                Console.WriteLine($"Before schedule at {DateTime.Now:o}");
+
+                var subscription = scheduler.Schedule(delay, () => Console.WriteLine($"Inside schedule at {DateTime.Now:o}"));
+
+                Console.WriteLine($"After schedule at  {DateTime.Now:o}");
+
+                subscription.Dispose();
+            }
+
+            public static void Cancellation_CanAlsoRemoveInProgressWork()
             {
-                Get.CurrentThread();
-                Console.WriteLine("outer start.");
-                sch.Schedule(state, innerAction);
-                Console.WriteLine("outer end.");
+                IDisposable Work(IScheduler s, List<int> seq)
+                {
+                    var tokenSource = new CancellationTokenSource();
+                    var cancelToken = tokenSource.Token;
 
-                return Disposable.Empty;
-            };
+                    var task = new Task(
+                        () =>
+                        {
+                            Console.WriteLine();
+                            for (var i = 0; i < 1000; i++)
+                            {
+                                var sw = new SpinWait();
+                                for (var j = 0; j < 3000; j++)
+                                    sw.SpinOnce();
 
-            scheduler.Schedule("", outerAction);
+                                Console.Write(".");
+                                seq.Add(i);
+
+                                if (cancelToken.IsCancellationRequested)
+                                {
+                                    Console.WriteLine("Cancelation requested");
+                                    //cancelToken.ThrowIfCancellationRequested();
+                                    return;
+                                }
+                            }
+                        },
+                        cancelToken);
+
+                    task.Start();
+
+                    return Disposable.Create(tokenSource.Cancel);
+                }
+
+                var scheduler = NewThreadScheduler.Default;
+                //var scheduler = CurrentThreadScheduler.Instance;
+
+                var list = new List<int>();
+                Console.WriteLine("Enter to quit:");
+                var subscription = scheduler.Schedule(list, Work);
+
+                Console.ReadLine();
+                Console.WriteLine("Cancelling...");
+
+                subscription.Dispose();
+                Console.WriteLine("Cancelled");
+            }
+
+            public static void Recursion_IsTheBasisOfComplexWorkUsingSchedulers()
+            {
+                Action<Action> work = async self =>
+                {
+                    Console.WriteLine("Running");
+                    await Task.Delay(250);
+                    self();
+                };
+
+                var scheduler = NewThreadScheduler.Default;
+                var subscription = scheduler.Schedule(work);
+
+                Console.ReadLine();
+                Console.WriteLine("Cancelling");
+                subscription.Dispose();
+                Console.WriteLine("Cancelled");
+            }
         }
 
-        public static void ThreadPoolScheduler_SchedulesStuffASAP_OnTheThreadPool()
+        public static class Schedulers
         {
-            //Execution Context: Thread Pool
-            //Execution Policy: ASAP (as opposed to immediate)
-            //Clock: Machine Time
+            public static void ImmediateScheduler_DoesntActuallyDoAnyScheduling_MakingStuffBlocking_DeadlockMaterial()
+            {
+                //Execution Context: Current Thread
+                //Execution Policy: Immediate
+                //Clock: Machine Time
 
-            Console.WriteLine("Before");
+                Console.WriteLine("Before");
+                Observable.Interval(TimeSpan.FromMilliseconds(250), ImmediateScheduler.Instance).Take(6).Dump("Interval on ImmediateScheduler");
+                Console.WriteLine("After");
+            }
 
-            ScheduleTasksWithPassedOnScheduler(ThreadPoolScheduler.Instance);
-            ScheduleTasksWithPassedOnScheduler(ThreadPoolScheduler.Instance);
-            ScheduleTasksWithPassedOnScheduler(ThreadPoolScheduler.Instance);
+            public static void CurrentThreadScheduler_QueuesSuccessivelyScheduledActions_EffectivelyDoingOutOfOrderExecution_ButNoMoreDeadlocks()
+            {
+                //Execution Context: Current Thread
+                //Execution Policy: FIFO (trampolined  / message queue)
+                //Clock: Machine Time
 
-            Console.WriteLine("After");
-        }
+                Console.WriteLine("Before");
+                Observable.Interval(TimeSpan.FromMilliseconds(250), CurrentThreadScheduler.Instance).Take(6).Dump("Interval on CurrentThreadScheduler");
+                Console.WriteLine("After");
+            }
 
-        public static void TaskPoolScheduler_LikeTheThreadPoolScheduler_DoesntGuaranteeSameThreadForNestedActions()
-        {
-            //Execution Context: Thread Pool
-            //Execution Policy: ASAP (as opposed to immediate)
-            //Clock: Machine Time
+            public static void ScheduleTasks(IScheduler scheduler)
+            {
+                Action leafAction = () =>
+                {
+                    Get.CurrentThread();
+                    Console.WriteLine("----leafAction.");
+                };
+                Action innerAction = () =>
+                {
+                    Get.CurrentThread();
+                    Console.WriteLine("--innerAction start.");
+                    scheduler.Schedule(leafAction);
+                    Console.WriteLine("--innerAction end.");
+                };
+                Action outerAction = () =>
+                {
+                    Get.CurrentThread();
+                    Console.WriteLine("outer start.");
+                    scheduler.Schedule(innerAction);
+                    Console.WriteLine("outer end.");
+                };
+                scheduler.Schedule(outerAction);
+            }
 
-            Console.WriteLine("Before");
+            public static void CurrentThreadScheduler_vs_ImmediateScheduler()
+            {
+                ScheduleTasks(CurrentThreadScheduler.Instance);
+                /*Output:
+                outer start. on the specified thread
+                outer end.
+                --innerAction start.
+                --innerAction end.
+                ----leafAction.
+                */
 
-            ScheduleTasksWithPassedOnScheduler(TaskPoolScheduler.Default);
-            ScheduleTasksWithPassedOnScheduler(TaskPoolScheduler.Default);
-            ScheduleTasksWithPassedOnScheduler(TaskPoolScheduler.Default);
+                Console.ReadLine();
+                ScheduleTasks(ImmediateScheduler.Instance);
+                /*Output:
+                outer start.
+                --innerAction start.
+                ----leafAction.
+                --innerAction end.
+                outer end.
+                */
+            }
 
-            Console.WriteLine("After");
+            public static void EventLoopScheduler_IsSimilarToCurrentThreadScheduler_ButYouProvideTheThread()
+            {
+                //Execution Context: Dedicated (i.e. provided) Thread
+                //Execution Policy: FIFO (trampolined  / message queue)
+                //Clock: Machine Time
 
-            //Favor this over the ThreadPoolScheduler (if available on your target platform)
-        }
+                Console.WriteLine("Before");
+                Observable.Using(
+                    () => new EventLoopScheduler(),
+                    els => Observable.Interval(TimeSpan.FromMilliseconds(250), els).Take(6))
+                    .Dump("Interval on EventLoopScheduler");
+                Console.WriteLine("After");
+            }
 
-        public static void DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread(Form form)
-        {
-            //Execution Context: UI Thread
-            //Execution Policy: Priority FIFO (non-blocking)
-            //Clock: Machine Time
+            public static void EventLoopScheduler_vs_CurrentThreadScheduler()
+            {
+                ScheduleTasks(new EventLoopScheduler());
+                /*Output:
+                outer start. on specified thread
+                outer end.
+                --innerAction start. on specified thread
+                --innerAction end.
+                ----leafAction. on specified thread
+                */
 
-            Observable.Interval(TimeSpan.FromMilliseconds(250), new DispatcherScheduler(Dispatcher.CurrentDispatcher))
-                .Take(6)
-                .Subscribe(i => form.AppendToBox($"Blipp{i}"));
+                Console.ReadLine();
 
-            form.AppendToBox("Finished");
+                ScheduleTasks(CurrentThreadScheduler.Instance);
+                /*Output:
+                outer start.
+                outer end.
+                --innerAction start.
+                --innerAction end.
+                ----leafAction.
+                */
+            }
+
+            public static void NewThreadScheduler_BuildsNewEventLoopSchedulers_ForEachTopLevelScheduledActions()
+            {
+                //Execution Context: Dedicated (i.e. provided) Thread
+                //Execution Policy: FIFO (trampolined  / message queue)
+                //Clock: Machine Time
+
+                Console.WriteLine("Before");
+                var newThreadScheduler = new NewThreadScheduler();
+
+                ScheduleTasksWithPassedOnScheduler(newThreadScheduler);
+                /*Output:
+                outer start. on thread T0
+                outer end.
+                --innerAction start. on thread T0
+                --innerAction end.
+                ----leafAction. on thread T0
+                */
+
+                Console.ReadLine();
+                ScheduleTasksWithPassedOnScheduler(newThreadScheduler);
+                /*Output:
+                outer start. on thread T1
+                outer end.
+                --innerAction start. on thread T1
+                --innerAction end.
+                ----leafAction. on thread T1
+                */
+
+                Console.WriteLine("After");
+            }
+
+            public static void ScheduleTasksWithPassedOnScheduler(IScheduler scheduler)
+            {
+                Func<IScheduler, string, IDisposable> leafAction = (sch, state) =>
+                {
+                    Get.CurrentThread();
+                    Console.WriteLine("----leafAction. " + state);
+
+                    return Disposable.Empty;
+                };
+                Func<IScheduler, string, IDisposable> innerAction = (sch, state) =>
+                {
+                    Get.CurrentThread();
+                    Console.WriteLine("--innerAction start.");
+                    sch.Schedule(state, leafAction);
+                    Console.WriteLine("--innerAction end.");
+
+                    return Disposable.Empty;
+                };
+                Func<IScheduler, string, IDisposable> outerAction = (sch, state) =>
+                {
+                    Get.CurrentThread();
+                    Console.WriteLine("outer start.");
+                    sch.Schedule(state, innerAction);
+                    Console.WriteLine("outer end.");
+
+                    return Disposable.Empty;
+                };
+
+                scheduler.Schedule("", outerAction);
+            }
+
+            public static void ThreadPoolScheduler_SchedulesStuffASAP_OnTheThreadPool()
+            {
+                //Execution Context: Thread Pool
+                //Execution Policy: ASAP (as opposed to immediate)
+                //Clock: Machine Time
+
+                Console.WriteLine("Before");
+
+                ScheduleTasksWithPassedOnScheduler(ThreadPoolScheduler.Instance);
+                ScheduleTasksWithPassedOnScheduler(ThreadPoolScheduler.Instance);
+                ScheduleTasksWithPassedOnScheduler(ThreadPoolScheduler.Instance);
+
+                Console.WriteLine("After");
+            }
+
+            public static void TaskPoolScheduler_LikeTheThreadPoolScheduler_DoesntGuaranteeSameThreadForNestedActions()
+            {
+                //Execution Context: Thread Pool
+                //Execution Policy: ASAP (as opposed to immediate)
+                //Clock: Machine Time
+
+                Console.WriteLine("Before");
+
+                ScheduleTasksWithPassedOnScheduler(TaskPoolScheduler.Default);
+                ScheduleTasksWithPassedOnScheduler(TaskPoolScheduler.Default);
+                ScheduleTasksWithPassedOnScheduler(TaskPoolScheduler.Default);
+
+                Console.WriteLine("After");
+
+                //Favor this over the ThreadPoolScheduler (if available on your target platform)
+            }
+
+            public static void DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread(Form form)
+            {
+                //Execution Context: UI Thread
+                //Execution Policy: Priority FIFO (non-blocking)
+                //Clock: Machine Time
+
+                Observable.Interval(TimeSpan.FromMilliseconds(250), new DispatcherScheduler(Dispatcher.CurrentDispatcher))
+                    .Take(6)
+                    .Subscribe(i => form.AppendToBox($"Blipp{i}"));
+
+                form.AppendToBox("Finished");
+            }
         }
     }
 }

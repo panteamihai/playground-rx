@@ -151,15 +151,24 @@ namespace RxWorkshop
             //Scheduling.SubscribeOn_WillScheduleTheSubscriptionWarmUpCode_OnTheReceivedScheduler_MakingPostSubscriptionProcessingNonBlocking();
             //Scheduling.SubscribeOn_WillNotChangeTheThreadForProcessingByDefault();
             //Scheduling.ObserveOn_WillScheduleProcessing_OnTheReceivedScheduler_MakingSubscriptionProcessingNonBlocking();
-            //Scheduling.ImmediateScheduler_DoesntActuallyDoAnyScheduling_MakingStuffBlocking_DeadlockMaterial();
-            //Scheduling.CurrentThreadScheduler_QueuesSuccessivelyScheduledActions_EffectivelyDoingOutOfOrderExecution_ButNoMoreDeadlocks();
-            //Scheduling.CurrentThreadScheduler_vs_ImmediateScheduler();
-            //Scheduling.EventLoopScheduler_IsSimilarToCurrentThreadScheduler_ButYouProvideTheThread();
-            //Scheduling.EventLoopScheduler_vs_CurrentThreadScheduler();
-            //Scheduling.NewThreadScheduler_BuildsNewEventLoopSchedulers_ForEachTopLevelScheduledActions();
-            //Scheduling.ThreadPoolScheduler_SchedulesStuffASAP_OnTheThreadPool();
-            //Scheduling.TaskPoolScheduler_LikeTheThreadPoolScheduler_DoesntGuaranteeSameThreadForNestedActions();
-            //WithUI -> Scheduling.DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread();
+            //Scheduling.ConcurrencyPitfall_SynchronousOperators_CauseRaceConditions_AndUsualyDeadlock();
+            //WithUI -> BrokenUI / Deadlock scenario
+            //Scheduling.AdvancedScheduling.PassingState_ByCapturingClosure_IsNonDeterministic();
+            //Scheduling.AdvancedScheduling.PassingState_ThroughValueTypeParameter_IsDeterministic_AndCanBeCancelled();
+            //Scheduling.AdvancedScheduling.PassingState_ThroughReferenceTypeParameter_IsAgainNonDeterministic_MutableSharedStateIsTrullyWack();
+            //Scheduling.AdvancedScheduling.ActionsCanBeScheduled_InTheFuture();
+            //Scheduling.AdvancedScheduling.Cancellation_WillRemoveScheduledButNotYetStartedWork_FromTheSchedulerQueue();
+            //Scheduling.AdvancedScheduling.Cancellation_CanAlsoRemoveInProgressWork();
+            //Scheduling.AdvancedScheduling.Recursion_IsTheBasisOfComplexWorkUsingSchedulers();
+            //Scheduling.Schedulers.ImmediateScheduler_DoesntActuallyDoAnyScheduling_MakingStuffBlocking_DeadlockMaterial();
+            //Scheduling.Schedulers.CurrentThreadScheduler_QueuesSuccessivelyScheduledActions_EffectivelyDoingOutOfOrderExecution_ButNoMoreDeadlocks();
+            //Scheduling.Schedulers.CurrentThreadScheduler_vs_ImmediateScheduler();
+            //Scheduling.Schedulers.EventLoopScheduler_IsSimilarToCurrentThreadScheduler_ButYouProvideTheThread();
+            //Scheduling.Schedulers.EventLoopScheduler_vs_CurrentThreadScheduler();
+            //Scheduling.Schedulers.NewThreadScheduler_BuildsNewEventLoopSchedulers_ForEachTopLevelScheduledActions();
+            //Scheduling.Schedulers.ThreadPoolScheduler_SchedulesStuffASAP_OnTheThreadPool();
+            //Scheduling.Schedulers.TaskPoolScheduler_LikeTheThreadPoolScheduler_DoesntGuaranteeSameThreadForNestedActions();
+            //WithUI -> Scheduling.Schedulers.DispatcherScheduler_CanBeUsedToEmitAndConsume_OnTheUIThread();
 
             //Testing.AdvanceTo_WillExecuteAllQueuedActions_UpToAnAbsoluteTime_SpecifiedInTicks();
             //Testing.AdvanceBy_WillMoveTheInternalClockAhead_ByARelativeAmount_SpecifiedInTicks();

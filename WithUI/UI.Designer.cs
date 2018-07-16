@@ -37,10 +37,11 @@
             this.btnDispatcher = new System.Windows.Forms.Button();
             this.btnHappy = new System.Windows.Forms.Button();
             this.btnException = new System.Windows.Forms.Button();
+            this.btnDeadlock = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
+            //
             // btnContextDisposable
-            // 
+            //
             this.btnContextDisposable.Location = new System.Drawing.Point(12, 12);
             this.btnContextDisposable.Name = "btnContextDisposable";
             this.btnContextDisposable.Size = new System.Drawing.Size(236, 42);
@@ -48,17 +49,17 @@
             this.btnContextDisposable.Text = "Run ContextDisposable example";
             this.btnContextDisposable.UseVisualStyleBackColor = true;
             this.btnContextDisposable.Click += new System.EventHandler(this.BtnContextDisposableClick);
-            // 
+            //
             // txtOutput
-            // 
+            //
             this.txtOutput.Location = new System.Drawing.Point(254, 12);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.Size = new System.Drawing.Size(413, 330);
+            this.txtOutput.Size = new System.Drawing.Size(413, 401);
             this.txtOutput.TabIndex = 1;
-            // 
+            //
             // btnFromEventPattern
-            // 
+            //
             this.btnFromEventPattern.Location = new System.Drawing.Point(12, 60);
             this.btnFromEventPattern.Name = "btnFromEventPattern";
             this.btnFromEventPattern.Size = new System.Drawing.Size(236, 42);
@@ -66,9 +67,9 @@
             this.btnFromEventPattern.Text = "Run FromEventPattern example";
             this.btnFromEventPattern.UseVisualStyleBackColor = true;
             this.btnFromEventPattern.Click += new System.EventHandler(this.BtnFromEventPatternClick);
-            // 
+            //
             // btnAggregate
-            // 
+            //
             this.btnAggregate.Location = new System.Drawing.Point(12, 108);
             this.btnAggregate.Name = "btnAggregate";
             this.btnAggregate.Size = new System.Drawing.Size(236, 42);
@@ -76,9 +77,9 @@
             this.btnAggregate.Text = "Run Aggregate example";
             this.btnAggregate.UseVisualStyleBackColor = true;
             this.btnAggregate.Click += new System.EventHandler(this.BtnAggregateClick);
-            // 
+            //
             // btnScan
-            // 
+            //
             this.btnScan.Location = new System.Drawing.Point(12, 156);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(236, 42);
@@ -86,9 +87,9 @@
             this.btnScan.Text = "Run Scan example";
             this.btnScan.UseVisualStyleBackColor = true;
             this.btnScan.Click += new System.EventHandler(this.BtnScanClick);
-            // 
+            //
             // btnThrottle
-            // 
+            //
             this.btnThrottle.Location = new System.Drawing.Point(12, 204);
             this.btnThrottle.Name = "btnThrottle";
             this.btnThrottle.Size = new System.Drawing.Size(236, 42);
@@ -96,42 +97,53 @@
             this.btnThrottle.Text = "Run Throttle example";
             this.btnThrottle.UseVisualStyleBackColor = true;
             this.btnThrottle.Click += new System.EventHandler(this.BtnThrottleClick);
-            // 
+            //
             // btnDispatcher
-            // 
-            this.btnDispatcher.Location = new System.Drawing.Point(12, 252);
+            //
+            this.btnDispatcher.Location = new System.Drawing.Point(12, 315);
             this.btnDispatcher.Name = "btnDispatcher";
             this.btnDispatcher.Size = new System.Drawing.Size(236, 42);
             this.btnDispatcher.TabIndex = 6;
             this.btnDispatcher.Text = "Run Dispatcher example";
             this.btnDispatcher.UseVisualStyleBackColor = true;
             this.btnDispatcher.Click += new System.EventHandler(this.BtnDispatcherClick);
-            // 
+            //
             // btnHappy
-            // 
-            this.btnHappy.Location = new System.Drawing.Point(12, 300);
+            //
+            this.btnHappy.Location = new System.Drawing.Point(12, 363);
             this.btnHappy.Name = "btnHappy";
             this.btnHappy.Size = new System.Drawing.Size(118, 42);
             this.btnHappy.TabIndex = 7;
             this.btnHappy.Text = "Run happy example";
             this.btnHappy.UseVisualStyleBackColor = true;
             this.btnHappy.Click += new System.EventHandler(this.BtnTestingHappyFlowClick);
-            // 
+            //
             // btnException
-            // 
-            this.btnException.Location = new System.Drawing.Point(130, 300);
+            //
+            this.btnException.Location = new System.Drawing.Point(130, 363);
             this.btnException.Name = "btnException";
             this.btnException.Size = new System.Drawing.Size(118, 42);
             this.btnException.TabIndex = 8;
             this.btnException.Text = "Run sad example";
             this.btnException.UseVisualStyleBackColor = true;
             this.btnException.Click += new System.EventHandler(this.BtnTestingExceptionFlowClick);
-            // 
+            //
+            // btnDeadlock
+            //
+            this.btnDeadlock.Location = new System.Drawing.Point(12, 252);
+            this.btnDeadlock.Name = "btnDeadlock";
+            this.btnDeadlock.Size = new System.Drawing.Size(236, 42);
+            this.btnDeadlock.TabIndex = 9;
+            this.btnDeadlock.Text = "Run Deadlock example";
+            this.btnDeadlock.UseVisualStyleBackColor = true;
+            this.btnDeadlock.Click += new System.EventHandler(this.BtnDeadlockClick);
+            //
             // UI
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(674, 351);
+            this.ClientSize = new System.Drawing.Size(674, 425);
+            this.Controls.Add(this.btnDeadlock);
             this.Controls.Add(this.btnException);
             this.Controls.Add(this.btnHappy);
             this.Controls.Add(this.btnDispatcher);
@@ -159,6 +171,7 @@
         private System.Windows.Forms.Button btnDispatcher;
         private System.Windows.Forms.Button btnHappy;
         private System.Windows.Forms.Button btnException;
+        private System.Windows.Forms.Button btnDeadlock;
     }
 }
 
